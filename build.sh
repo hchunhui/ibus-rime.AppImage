@@ -83,7 +83,8 @@ bundle() {
     ./linuxdeploy-x86_64.AppImage -e librime/build/bin/rime_deployer --appdir=AppDir &&
     ./linuxdeploy-x86_64.AppImage -e librime/build/bin/rime_dict_manager --appdir=AppDir &&
     ./linuxdeploy-x86_64.AppImage -e librime/build/bin/rime_patch --appdir=AppDir &&
-    ./linuxdeploy-x86_64.AppImage -l librime/build/lib/librime-*.so --appdir=AppDir &&
+    ./linuxdeploy-x86_64.AppImage -l librime/build/lib/librime-lua.so --appdir=AppDir &&
+    ./linuxdeploy-x86_64.AppImage -l librime/build/lib/librime-octagram.so --appdir=AppDir &&
     mkdir -p AppDir/usr/share/ibus-rime &&
     cp -r ibus-rime/icons AppDir/usr/share/ibus-rime/ &&
     mv plum/output AppDir/usr/share/rime-data &&
