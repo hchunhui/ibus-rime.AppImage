@@ -114,3 +114,5 @@ mv ../ibus-engine-rime-x86_64.AppImage .
 mv ../librime/build/lib/librime-*.so .
 cd ..
 tar czvf out.tgz out
+
+ls -l
