@@ -1,0 +1,11 @@
+#!/bin/sh
+TEMP_DIR=`mktemp -d`
+sed "s#PATH#$APPDIR#g" "$APPDIR/rime.xml" > "$TEMP_DIR/rime.xml"
+IBUS_COMPONENT_PATH="$TEMP_DIR":/usr/share/ibus/component ibus write-cache
+ibus restart
+
+cd "$APPDIR/usr"
+"bin/ibus-engine-rime" &
+sleep 1
+ibus engine rime
+rm -rf "$TEMP_DIR"

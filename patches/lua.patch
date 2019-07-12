@@ -1,0 +1,18 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index facd4ea..24a19b5 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,13 +1,3 @@
+-find_package(PkgConfig)
+-if(PkgConfig_FOUND)
+-  foreach(pkg luajit lua lua53 lua52 lua51)
+-    pkg_check_modules(LUA ${pkg})
+-    if(LUA_FOUND)
+-      break()
+-    endif()
+-  endforeach()
+-endif()
+-
+ if(LUA_FOUND)
+   include_directories(${LUA_INCLUDE_DIRS})
+ else()
