@@ -14,7 +14,7 @@ deploy:
   provider: releases
   api_key:
     secure: JO/rNafyQtITAWFbjNDqq/z9u9tu+7dx6e/xVleAruh5eAb4Aq1BEcS2xlPxzQ3H5d6ZCcGzbmsndxGIJ+4VsGG8qLRu3o1NU8pMflnDkX0OOXKiUreG6DGQo6SjdCyUoqHFcDmChMKO/w29x8JeLRzPRUN2NyCjP/nlseB6KghwzYiUko3JT5xk3tqMCcTF5iV4Tv0W2b/N5mrr0CSqW/on/10mWDMHib9bGFnBFhrwPOXiN8UuUxOEOLJ0LSviWmX1M9BrODvbnUVM2WnwGyKPFuWL7zqJV2vqnHSZruQ1IbB7MSnZ3ZbGrkl9HXbSdVqEnhbv3LLTcouudkl9k5p2K3/Ir3fVWEY+OqBRPro+N1XLvLEWZX9zPVXrhwm32vM6ccmF2YEUhpDlSKhBBxef0JA6Pv9Qm2uJlLf19Gul4zpNelsatSCGY10B6hs1/Z5pd+kEFTRmaJ2kRwB108MnMbki8fQuCkhW2XpVjtmmun93BipZee8qjS2tD0IxcOOelBAGow3nwkfYP8edEFLyqSawCBTCWkO18gvZeGkYipHZMutuHgKbpavM9W26DJARkY22tnDYILP3/1XufjR7kw4+8Vadzctg0HD4PT/qj/3KfyYrboXc488nuFuOi7py5bjAEDY6GdTYqPrcgyMamB58lIgkam3ViFPT7vg=
-  file: out.tgz
+  file: ibus-engine-rime-x86_64.AppImage
   skip_cleanup: true
   on:
     repo: hchunhui/build

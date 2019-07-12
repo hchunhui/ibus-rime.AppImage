@@ -1,0 +1,7 @@
+plugins:
+  - librime-lua.so
+  - librime-octagram.so
+
+modules:
+  - lua
+  - grammar

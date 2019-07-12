@@ -83,10 +83,12 @@ bundle() {
     ./linuxdeploy-x86_64.AppImage -e librime/build/bin/rime_deployer --appdir=AppDir &&
     ./linuxdeploy-x86_64.AppImage -e librime/build/bin/rime_dict_manager --appdir=AppDir &&
     ./linuxdeploy-x86_64.AppImage -e librime/build/bin/rime_patch --appdir=AppDir &&
+    ./linuxdeploy-x86_64.AppImage -l librime/build/lib/librime-*.so --appdir=AppDir &&
     mkdir -p AppDir/usr/share/ibus-rime &&
     cp -r ibus-rime/icons AppDir/usr/share/ibus-rime/ &&
     mv plum/output AppDir/usr/share/rime-data &&
     cp -r librime/thirdparty/share/opencc AppDir/usr/share/rime-data/ &&
+    cp ibus_rime.yaml AppDir/usr/share/rime-data/ &&
     ./appimagetool-x86_64.AppImage AppDir
 }
 
@@ -107,12 +109,3 @@ build_ibus_rime &&
 fetch_plum &&
 
 bundle
-
-mkdir out
-cd out
-mv ../ibus-engine-rime-x86_64.AppImage .
-mv ../librime/build/lib/librime-*.so .
-cd ..
-tar czvf out.tgz out
-
-ls -l
