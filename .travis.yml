@@ -5,7 +5,7 @@ dist: trusty
 
 install:
 - sudo apt-get update -qq
-- sudo apt-get install -qq build-essential libboost-dev libibus-dev libnotify-dev --no-install-recommends
+- sudo apt-get install -qq build-essential libboost-dev libibus-1.0-dev libnotify-dev --no-install-recommends
 
 script:
 - "./build.sh"
