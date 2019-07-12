@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 72bb553..6bc4725 100644
+index 72bb553..620d698 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -18,16 +18,19 @@ if (LIBNOTIFY_FOUND)
+@@ -18,16 +18,20 @@ if (LIBNOTIFY_FOUND)
    link_directories(${LIBNOTIFY_LIBRARY_DIRS})
  endif(LIBNOTIFY_FOUND)
  
@@ -23,6 +23,7 @@ index 72bb553..6bc4725 100644
 +include_directories(${PROJECT_SOURCE_DIR}/../librime/src)
 +link_directories(${PROJECT_SOURCE_DIR}/../librime/build/lib)
 +set(Rime_LIBRARIES rime)
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
 +
 +#if(NOT DEFINED RIME_DATA_DIR)
 +#  find_package(RimeData REQUIRED)
