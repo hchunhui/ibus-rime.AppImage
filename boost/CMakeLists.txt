@@ -3,11 +3,8 @@ cmake_minimum_required(VERSION 2.8.11)
 
 add_definitions("-DBOOST_NO_CXX11_SCOPED_ENUMS")
 add_definitions("-DBOOST_LOCALE_WITH_ICONV")
-#link_directories(${PROJECT_SOURCE_DIR}/lib)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-
-install(FILES cmake/RimeConfig.cmake DESTINATION share/cmake/rime)
 
 unset(srcs)
 foreach(dir system filesystem regex)
