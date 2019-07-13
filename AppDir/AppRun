@@ -1,6 +1,7 @@
 #!/bin/sh
 BASE="$(basename "$ARGV0")"
 cd "$APPDIR/usr"
+
 if [ -f "bin/$BASE" ]; then
     exec "bin/$BASE" "$@"
 fi
@@ -11,6 +12,12 @@ if [ $# -ge 1 ]; then
 	shift
 	exec "$APP" "$@"
     fi
+
+    echo "Usage: $BASE [command [arguments...]]" 1>&2
+    echo "Run without command to setup." 1>&2
+    echo "Available commands:" 1>&2
+    ls -l bin 1>&2
+    exit 1
 fi
 
 if ! which ibus > /dev/null ; then
@@ -27,8 +34,8 @@ setup() {
     mkdir -p "$LOCAL_DIR" &&
     cp "$APPDIR/ibus-rime.png" "$LOCAL_DIR" &&
     sed -e "s#%ICON%#$LOCAL_DIR/ibus-rime.png#g" \
-	-e "s#%ENGINE%#$APPIMAGE#g" \
-	"$APPDIR/rime.xml.in" > "$LOCAL_DIR/rime.xml" &&
+        -e "s#%ENGINE%#$APPIMAGE#g" \
+        "$APPDIR/rime.xml.in" > "$LOCAL_DIR/rime.xml" &&
 
     IBUS_COMPONENT_PATH="$LOCAL_DIR":"$IBUS_PREFIX/share/ibus/component" ibus write-cache &&
 

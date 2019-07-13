@@ -84,13 +84,16 @@ fetch_plum() {
 
 bundle() {
     cp ibus-rime/icons/rime.png AppDir/ibus-rime.png &&
-    ./linuxdeploy-x86_64.AppImage -e ibus-rime/build/ibus-engine-rime --appdir=AppDir &&
-    ./linuxdeploy-x86_64.AppImage -e librime/build/bin/rime_deployer --appdir=AppDir &&
-    ./linuxdeploy-x86_64.AppImage -e librime/build/bin/rime_dict_manager --appdir=AppDir &&
-    ./linuxdeploy-x86_64.AppImage -e librime/build/bin/rime_patch --appdir=AppDir &&
-    ./linuxdeploy-x86_64.AppImage -l librime/build/lib/librime-lua.so --appdir=AppDir &&
-    ./linuxdeploy-x86_64.AppImage -l librime/build/lib/librime-octagram.so --appdir=AppDir &&
-    ./linuxdeploy-x86_64.AppImage -e /usr/bin/notify-send --appdir=AppDir &&
+    ./linuxdeploy-x86_64.AppImage \
+	-e /usr/bin/notify-send \
+	-e ibus-rime/build/ibus-engine-rime \
+	-e librime/build/bin/rime_deployer \
+	-e librime/build/bin/rime_dict_manager \
+	-e librime/build/bin/rime_patch \
+	-l librime/build/lib/librime-lua.so \
+	-l librime/build/lib/librime-octagram.so \
+	-e librime/build/plugins/octagram/bin/build_grammar \
+	--appdir=AppDir &&
     mkdir -p AppDir/usr/share/ibus-rime &&
     cp -r ibus-rime/icons AppDir/usr/share/ibus-rime/ &&
     mv plum/output AppDir/usr/share/rime-data &&
