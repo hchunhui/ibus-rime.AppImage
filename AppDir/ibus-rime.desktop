@@ -1,7 +1,7 @@
 [Desktop Entry]
 Categories=Utility;
 Type=Application
-Icon=ibus-engine-rime
+Icon=ibus-rime
 Exec=ibus-engine-rime
-Name=ibus-engine-rime
+Name=ibus-rime
 

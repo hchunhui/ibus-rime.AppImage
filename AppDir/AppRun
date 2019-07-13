@@ -1,11 +1,43 @@
 #!/bin/sh
-TEMP_DIR=`mktemp -d`
-sed "s#PATH#$APPDIR#g" "$APPDIR/rime.xml" > "$TEMP_DIR/rime.xml"
-IBUS_COMPONENT_PATH="$TEMP_DIR":/usr/share/ibus/component ibus write-cache
-ibus restart
-
+BASE="$(basename "$ARGV0")"
 cd "$APPDIR/usr"
-"bin/ibus-engine-rime" &
-sleep 1
-ibus engine rime
-rm -rf "$TEMP_DIR"
+if [ -f "bin/$BASE" ]; then
+    exec "bin/$BASE" "$@"
+fi
+
+if [ $# -ge 1 ]; then
+    APP="bin/$1"
+    if [ -f "$APP" ]; then
+	shift
+	exec "$APP" "$@"
+    fi
+fi
+
+if ! which ibus > /dev/null ; then
+    bin/notify-send -u critical "ibus-rime setup" "ibus not found!"
+    echo "ibus not found!"
+    exit 1
+fi
+
+setup() {
+    IBUS_PREFIX="$(dirname $(which ibus))/.."
+    USER_DIR="$HOME/.config/ibus/rime"
+    LOCAL_DIR="$USER_DIR/appimage"
+
+    mkdir -p "$LOCAL_DIR" &&
+    cp "$APPDIR/ibus-rime.png" "$LOCAL_DIR" &&
+    sed -e "s#%ICON%#$LOCAL_DIR/ibus-rime.png#g" \
+	-e "s#%ENGINE%#$APPIMAGE#g" \
+	"$APPDIR/rime.xml" > "$LOCAL_DIR/rime.xml" &&
+
+    IBUS_COMPONENT_PATH="$LOCAL_DIR":"$IBUS_PREFIX/share/ibus/component" ibus write-cache &&
+
+    bin/rime_deployer --build "$USER_DIR" share/rime-data
+}
+
+bin/notify-send "ibus-rime setup" "Deploying..."
+if ! setup ; then
+    bin/notify-send -u critical "ibus-rime setup" "Fail!"
+else
+    bin/notify-send "ibus-rime setup" "Done! Please restart ibus."
+fi

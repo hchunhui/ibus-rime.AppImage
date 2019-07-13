@@ -24,6 +24,7 @@ fetch_librime() {
     cd plugins/lua &&
     bash ./travis-install.sh &&
     patch -p1 < "$H/patches/lua.patch" &&
+    cp "$H/patches/luaconf.h" thirdparty/lua5.3/ &&  # XXX: debian multiarch
     cd ../.. &&
     patch -p1 < "$H/patches/librime.patch" &&
     popd
@@ -85,6 +86,7 @@ bundle() {
     ./linuxdeploy-x86_64.AppImage -e librime/build/bin/rime_patch --appdir=AppDir &&
     ./linuxdeploy-x86_64.AppImage -l librime/build/lib/librime-lua.so --appdir=AppDir &&
     ./linuxdeploy-x86_64.AppImage -l librime/build/lib/librime-octagram.so --appdir=AppDir &&
+    ./linuxdeploy-x86_64.AppImage -e /usr/bin/notify-send --appdir=AppDir &&
     mkdir -p AppDir/usr/share/ibus-rime &&
     cp -r ibus-rime/icons AppDir/usr/share/ibus-rime/ &&
     mv plum/output AppDir/usr/share/rime-data &&
