@@ -28,7 +28,7 @@ setup() {
     cp "$APPDIR/ibus-rime.png" "$LOCAL_DIR" &&
     sed -e "s#%ICON%#$LOCAL_DIR/ibus-rime.png#g" \
 	-e "s#%ENGINE%#$APPIMAGE#g" \
-	"$APPDIR/rime.xml" > "$LOCAL_DIR/rime.xml" &&
+	"$APPDIR/rime.xml.in" > "$LOCAL_DIR/rime.xml" &&
 
     IBUS_COMPONENT_PATH="$LOCAL_DIR":"$IBUS_PREFIX/share/ibus/component" ibus write-cache &&
 

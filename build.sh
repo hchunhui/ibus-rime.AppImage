@@ -80,6 +80,7 @@ fetch_plum() {
 }
 
 bundle() {
+    cp ibus-rime/icons/rime.png AppDir/ibus-rime.png &&
     ./linuxdeploy-x86_64.AppImage -e ibus-rime/build/ibus-engine-rime --appdir=AppDir &&
     ./linuxdeploy-x86_64.AppImage -e librime/build/bin/rime_deployer --appdir=AppDir &&
     ./linuxdeploy-x86_64.AppImage -e librime/build/bin/rime_dict_manager --appdir=AppDir &&
