@@ -23,10 +23,11 @@ fetch_librime() {
     ./install-plugins.sh hchunhui/librime-lua &&
     cd plugins/lua &&
     bash ./travis-install.sh &&
-    patch -p1 < "$H/patches/lua.patch" &&
-    cp "$H/patches/luaconf.h" thirdparty/lua5.3/ &&  # XXX: debian multiarch
+    patch -p1 < "$H/patches/librime-lua/XXX.patch" &&
+    cp "$H/patches/librime-lua/luaconf.h" thirdparty/lua5.3/ &&  # XXX: debian multiarch
     cd ../.. &&
-    patch -p1 < "$H/patches/librime.patch" &&
+    patch -p1 < "$H/patches/librime/0001-link-boost-mini.patch" &&
+    patch -p1 < "$H/patches/librime/0002-thirdparty-PIC.patch" &&
     popd
 }
 
@@ -34,7 +35,9 @@ fetch_ibus_rime() {
     pushd . &&
     git clone --depth=1 https://github.com/rime/ibus-rime.git &&
     cd ibus-rime &&
-    patch -p1 < "$H/patches/ibus-rime.patch" &&
+    patch -p1 < "$H/patches/ibus-rime/0001-patch-build-system.patch" &&
+    patch -p1 < "$H/patches/ibus-rime/0002-relocatable.patch" &&
+    patch -p1 < "$H/patches/ibus-rime/0003-my-color-scheme.patch" && # XXX
     popd
 }
 

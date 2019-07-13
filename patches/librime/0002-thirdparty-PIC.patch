@@ -1,25 +1,12 @@
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index f18cab0..3989c6a 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -65,11 +65,12 @@ else()
-   set(BOOST_COMPONENTS ${BOOST_COMPONENTS} signals)
- endif()
- 
--find_package(Boost 1.46.0 REQUIRED COMPONENTS ${BOOST_COMPONENTS})
--if(Boost_FOUND)
--  include_directories(${Boost_INCLUDE_DIRS})
--  link_directories(${Boost_LIBRARY_DIRS})
--endif()
-+#find_package(Boost 1.46.0 REQUIRED COMPONENTS ${BOOST_COMPONENTS})
-+#if(Boost_FOUND)
-+#  include_directories(${Boost_INCLUDE_DIRS})
-+#  link_directories(${Boost_LIBRARY_DIRS})
-+#endif()
-+link_libraries(boost-mini)
- 
- if(ENABLE_LOGGING)
- 
+From 37980f6659ce27b5515375f9bad203b2f7036f53 Mon Sep 17 00:00:00 2001
+From: Chunhui He <hchunhui@mail.ustc.edu.cn>
+Date: Sat, 13 Jul 2019 11:18:22 +0000
+Subject: [PATCH 2/2] thirdparty PIC
+
+---
+ thirdparty.mk | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
 diff --git a/thirdparty.mk b/thirdparty.mk
 index 04c6f5a..bf9e167 100644
 --- a/thirdparty.mk
@@ -72,3 +59,6 @@ index 04c6f5a..bf9e167 100644
  	-DBUILD_GMOCK:BOOL=OFF \
  	-DCMAKE_BUILD_TYPE:STRING="Release" \
  	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
+-- 
+2.20.1
+

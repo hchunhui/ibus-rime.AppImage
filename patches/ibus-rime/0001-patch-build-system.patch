@@ -1,0 +1,47 @@
+From 07f235b41f1b2a9fc7d4c9ee189fc8d998b7747c Mon Sep 17 00:00:00 2001
+From: Chunhui He <hchunhui@mail.ustc.edu.cn>
+Date: Sat, 13 Jul 2019 11:12:37 +0000
+Subject: [PATCH 1/3] patch build system
+
+---
+ CMakeLists.txt | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 72bb553..620d698 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -18,16 +18,20 @@ if (LIBNOTIFY_FOUND)
+   link_directories(${LIBNOTIFY_LIBRARY_DIRS})
+ endif(LIBNOTIFY_FOUND)
+ 
+-find_package(Rime REQUIRED)
+-if(Rime_FOUND)
+-  include_directories(${Rime_INCLUDE_DIR})
+-endif(Rime_FOUND)
+-
+-if(NOT DEFINED RIME_DATA_DIR)
+-  find_package(RimeData REQUIRED)
+-endif(NOT DEFINED RIME_DATA_DIR)
+-message(STATUS "Precompiler macro RIME_DATA_DIR is set to \"${RIME_DATA_DIR}\"")
+-add_definitions(-DRIME_DATA_DIR="${RIME_DATA_DIR}")
++#find_package(Rime REQUIRED)
++#if(Rime_FOUND)
++#  include_directories(${Rime_INCLUDE_DIR})
++#endif(Rime_FOUND)
++include_directories(${PROJECT_SOURCE_DIR}/../librime/src)
++link_directories(${PROJECT_SOURCE_DIR}/../librime/build/lib)
++set(Rime_LIBRARIES rime)
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
++
++#if(NOT DEFINED RIME_DATA_DIR)
++#  find_package(RimeData REQUIRED)
++#endif(NOT DEFINED RIME_DATA_DIR)
++#message(STATUS "Precompiler macro RIME_DATA_DIR is set to \"${RIME_DATA_DIR}\"")
++#add_definitions(-DRIME_DATA_DIR="${RIME_DATA_DIR}")
+ 
+ set(RIME_DEPS "dl")
+ 
+-- 
+2.20.1
+
