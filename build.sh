@@ -23,8 +23,6 @@ fetch_librime() {
     ./install-plugins.sh hchunhui/librime-lua &&
     cd plugins/lua &&
     bash ./travis-install.sh &&
-    patch -p1 < "$H/patches/librime-lua/XXX.patch" &&
-    cp "$H/patches/librime-lua/luaconf.h" thirdparty/lua5.3/ &&  # XXX: debian multiarch
     cd ../.. &&
     patch -p1 < "$H/patches/librime/0001-link-boost-mini.patch" &&
     patch -p1 < "$H/patches/librime/0002-thirdparty-PIC.patch" &&
