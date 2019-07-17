@@ -57,7 +57,7 @@ build_boost_mini() {
     cd boost &&
     rm -rf build &&
     mkdir build &&
-    cd build && cmake .. && make -j"$J" &&
+    cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make -j"$J" &&
     cp *.a "$LIB_PATH" &&
     cd .. &&
     cp -r filesystem/include/* "$INC_PATH" &&
