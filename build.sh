@@ -5,6 +5,10 @@ H="$PWD"
 INC_PATH="$H/librime/thirdparty/include"
 LIB_PATH="$H/librime/thirdparty/lib"
 
+get_version() {
+    git describe --always
+}
+
 fetch_boost_mini() {
     pushd . &&
     cd boost &&
@@ -15,24 +19,33 @@ fetch_boost_mini() {
     popd
 }
 
+fetch_plugin() {
+    ./install-plugins.sh "$1/librime-$2" &&
+    cd "plugins/$2" &&
+    echo "librime-$2 `get_version`" >> $H/version &&
+    if [ -e "travis-install.sh" ]; then
+        bash ./travis-install.sh
+    fi &&
+    cd ../..
+}
+
 fetch_librime() {
     pushd . &&
-    git clone --depth=1 https://github.com/rime/librime.git --recursive &&
+    git clone --shallow-exclude='1.5.0' https://github.com/rime/librime.git --recursive &&
     cd librime &&
-    ./install-plugins.sh lotem/librime-octagram &&
-    ./install-plugins.sh hchunhui/librime-lua &&
-    cd plugins/lua &&
-    bash ./travis-install.sh &&
-    cd ../.. &&
+    echo "librime `get_version`" >> $H/version &&
     patch -p1 < "$H/patches/librime/0001-link-boost-mini.patch" &&
     patch -p1 < "$H/patches/librime/0002-thirdparty-PIC.patch" &&
+    fetch_plugin lotem octagram &&
+    fetch_plugin hchunhui lua &&
     popd
 }
 
 fetch_ibus_rime() {
     pushd . &&
-    git clone --depth=1 https://github.com/rime/ibus-rime.git &&
+    git clone --shallow-exclude='1.3.0' https://github.com/rime/ibus-rime.git &&
     cd ibus-rime &&
+    echo "ibus-rime `get_version`" >> $H/version &&
     patch -p1 < "$H/patches/ibus-rime/0001-patch-build-system.patch" &&
     patch -p1 < "$H/patches/ibus-rime/0002-relocatable.patch" &&
     patch -p1 < "$H/patches/ibus-rime/0003-my-color-scheme.patch" && # XXX
@@ -97,9 +110,14 @@ bundle() {
     mv plum/output AppDir/usr/share/rime-data &&
     cp -r librime/thirdparty/share/opencc AppDir/usr/share/rime-data/ &&
     cp ibus_rime.yaml AppDir/usr/share/rime-data/ &&
+    echo 'EOF' >> version &&
+    cp version AppDir/usr/bin &&
     ./appimagetool-x86_64.AppImage AppDir
 }
 
+set -x
+echo -e '#!/bin/sh\ncat << EOF' > version &&
+chmod +x version &&
 wget "https://github.com/AppImage/AppImageKit/releases/download/12/appimagetool-x86_64.AppImage" &&
 wget "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage" &&
 chmod +x appimagetool-x86_64.AppImage &&

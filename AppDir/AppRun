@@ -15,6 +15,7 @@ if [ $# -ge 1 ]; then
 
     echo "Usage: $ARGV0 [command [arguments...]]" 1>&2
     echo "Run without command to setup." 1>&2
+    echo 1>&2
     echo "Available commands:" 1>&2
     ls -1 bin 1>&2
     exit 1
