@@ -1,18 +1,17 @@
-From e282d339b62fc96b4f4fe19dc3b4a1241901e227 Mon Sep 17 00:00:00 2001
+From 7a248b9f43a328d339d146f029fd2f36e2afe046 Mon Sep 17 00:00:00 2001
 From: Chunhui He <hchunhui@mail.ustc.edu.cn>
-Date: Sat, 13 Jul 2019 11:14:52 +0000
+Date: Thu, 18 Jul 2019 05:13:43 +0000
 Subject: [PATCH 3/3] my color scheme
 
 ---
- rime_engine.c   | 33 ++++++++++++++++++++++++---------
- rime_settings.h |  3 ---
- 2 files changed, 24 insertions(+), 12 deletions(-)
+ rime_engine.c | 33 ++++++++++++++++++++++++---------
+ 1 file changed, 24 insertions(+), 9 deletions(-)
 
 diff --git a/rime_engine.c b/rime_engine.c
-index 928abce..52f6b82 100644
+index 0b061e1..54e1e79 100644
 --- a/rime_engine.c
 +++ b/rime_engine.c
-@@ -358,16 +358,19 @@ static void ibus_rime_engine_update(IBusRimeEngine *rime_engine)
+@@ -356,16 +356,19 @@ static void ibus_rime_engine_update(IBusRimeEngine *rime_engine)
      glong cursor_pos =
          g_utf8_strlen(preedit, context.composition.cursor_pos - offset);
      text->attrs = ibus_attr_list_new();
@@ -39,7 +38,7 @@ index 928abce..52f6b82 100644
      }
    }
  
-@@ -410,20 +413,27 @@ static void ibus_rime_engine_update(IBusRimeEngine *rime_engine)
+@@ -408,20 +411,27 @@ static void ibus_rime_engine_update(IBusRimeEngine *rime_engine)
        gchar* text = context.menu.candidates[i].text;
        gchar* comment = context.menu.candidates[i].comment;
        IBusText *cand_text = NULL;
@@ -69,7 +68,7 @@ index 928abce..52f6b82 100644
        ibus_lookup_table_append_candidate(rime_engine->table, cand_text);
        IBusText *label = NULL;
        if (i < context.menu.page_size && has_labels) {
-@@ -435,6 +445,11 @@ static void ibus_rime_engine_update(IBusRimeEngine *rime_engine)
+@@ -433,6 +443,11 @@ static void ibus_rime_engine_update(IBusRimeEngine *rime_engine)
        else {
          label = ibus_text_new_from_printf("%d", (i + 1) % 10);
        }
@@ -81,20 +80,6 @@ index 928abce..52f6b82 100644
        ibus_lookup_table_set_label(rime_engine->table, i, label);
      }
      if (has_page_down) { //show page down except last page
-diff --git a/rime_settings.h b/rime_settings.h
-index 026245c..e71a21d 100644
---- a/rime_settings.h
-+++ b/rime_settings.h
-@@ -4,9 +4,6 @@
- #include <ibus.h>
- 
- // colors
--#define RIME_COLOR_LIGHT  0xd4d4d4
--#define RIME_COLOR_DARK   0x606060
--#define RIME_COLOR_BLACK  0x000000
- 
- struct ColorSchemeDefinition {
-   const char* color_scheme_id;
 -- 
 2.20.1
 

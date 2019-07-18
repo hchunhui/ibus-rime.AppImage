@@ -1,39 +1,23 @@
-From 894a679b1ffc30c20e213b58df25bc5197c8ed7b Mon Sep 17 00:00:00 2001
+From 3a8b9239764ff316b693a380b2ec99f6d98a81fe Mon Sep 17 00:00:00 2001
 From: Chunhui He <hchunhui@mail.ustc.edu.cn>
-Date: Sat, 13 Jul 2019 11:13:52 +0000
+Date: Thu, 18 Jul 2019 05:12:00 +0000
 Subject: [PATCH 2/3] relocatable
 
 ---
- rime_config.h |  6 +++---
- rime_engine.c | 25 ++++++++++++++++++-------
- 2 files changed, 21 insertions(+), 10 deletions(-)
+ rime_engine.c | 23 ++++++++++++++++-------
+ rime_main.c   |  5 ++++-
+ 2 files changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/rime_config.h b/rime_config.h
-index 1a83488..514447c 100644
---- a/rime_config.h
-+++ b/rime_config.h
-@@ -3,8 +3,8 @@
- 
- #define RIME_VERSION "1.4.0"
- 
--#define IBUS_RIME_INSTALL_PREFIX "/usr"
--#define IBUS_RIME_SHARED_DATA_DIR IBUS_RIME_INSTALL_PREFIX "/share/rime-data"
--#define IBUS_RIME_ICONS_DIR IBUS_RIME_INSTALL_PREFIX "/share/ibus-rime/icons"
-+#define IBUS_RIME_INSTALL_PREFIX ""
-+#define IBUS_RIME_SHARED_DATA_DIR IBUS_RIME_INSTALL_PREFIX "share/rime-data"
-+#define IBUS_RIME_ICONS_DIR IBUS_RIME_INSTALL_PREFIX "share/ibus-rime/icons"
- 
- #endif  // RIME_CONFIG_H_
 diff --git a/rime_engine.c b/rime_engine.c
-index 1348c70..928abce 100644
+index 1348c70..0b061e1 100644
 --- a/rime_engine.c
 +++ b/rime_engine.c
-@@ -110,42 +110,50 @@ ibus_rime_engine_init (IBusRimeEngine *rime_engine)
+@@ -110,42 +110,49 @@ ibus_rime_engine_init (IBusRimeEngine *rime_engine)
    IBusProperty* prop;
    IBusText* label;
    IBusText* tips;
-+  gchar *cwd = g_get_current_dir();
-+  gchar *icon = g_strdup_printf("%s/%s", cwd, IBUS_RIME_ICONS_DIR "/zh.png");
++  const gchar *appdir = g_getenv("APPDIR");
++  gchar *icon = g_strdup_printf("%s%s", appdir, IBUS_RIME_ICONS_DIR "/zh.png");
    label = ibus_text_new_from_static_string("中文");
    tips = ibus_text_new_from_static_string("中 ↔ A");
    prop = ibus_property_new("InputMode",
@@ -48,7 +32,7 @@ index 1348c70..928abce 100644
                             NULL);
    ibus_prop_list_append(rime_engine->props, prop);
 +  g_free(icon);
-+  icon = g_strdup_printf("%s/%s", cwd, IBUS_RIME_ICONS_DIR "/reload.png");
++  icon = g_strdup_printf("%s%s", appdir, IBUS_RIME_ICONS_DIR "/reload.png");
    label = ibus_text_new_from_static_string("部署");
    tips = ibus_text_new_from_static_string(_("Deploy"));
    prop = ibus_property_new("deploy",
@@ -63,7 +47,7 @@ index 1348c70..928abce 100644
                             NULL);
    ibus_prop_list_append(rime_engine->props, prop);
 +  g_free(icon);
-+  icon = g_strdup_printf("%s/%s", cwd, IBUS_RIME_ICONS_DIR "/sync.png");
++  icon = g_strdup_printf("%s%s", appdir, IBUS_RIME_ICONS_DIR "/sync.png");
    label = ibus_text_new_from_static_string("同步");
    tips = ibus_text_new_from_static_string(_("Sync data"));
    prop = ibus_property_new("sync",
@@ -78,44 +62,72 @@ index 1348c70..928abce 100644
                             NULL);
    ibus_prop_list_append(rime_engine->props, prop);
 +  g_free(icon);
-+  g_free(cwd);
  }
  
  static void
-@@ -235,19 +243,20 @@ static void ibus_rime_update_status(IBusRimeEngine *rime_engine,
+@@ -235,19 +242,20 @@ static void ibus_rime_update_status(IBusRimeEngine *rime_engine,
        status && status->schema_id ? g_strdup(status->schema_id) : NULL;
  
    IBusProperty* prop = ibus_prop_list_get(rime_engine->props, 0);
 -  const gchar* icon;
-+  gchar *cwd = g_get_current_dir();
++  const gchar *appdir = g_getenv("APPDIR");
 +  gchar* icon = NULL;
    IBusText* label;
    if (prop) {
      if (!status || status->is_disabled) {
 -      icon = IBUS_RIME_ICONS_DIR "/disabled.png";
-+      icon = g_strdup_printf("%s/%s", cwd, IBUS_RIME_ICONS_DIR "/disabled.png");
++      icon = g_strdup_printf("%s%s", appdir, IBUS_RIME_ICONS_DIR "/disabled.png");
        label = ibus_text_new_from_static_string("維護");
      }
      else if (status->is_ascii_mode) {
 -      icon = IBUS_RIME_ICONS_DIR "/abc.png";
-+      icon = g_strdup_printf("%s/%s", cwd, IBUS_RIME_ICONS_DIR "/abc.png");
++      icon = g_strdup_printf("%s%s", appdir, IBUS_RIME_ICONS_DIR "/abc.png");
        label = ibus_text_new_from_static_string("Abc");
      }
      else {
 -      icon = IBUS_RIME_ICONS_DIR "/zh.png";
-+      icon = g_strdup_printf("%s/%s", cwd, IBUS_RIME_ICONS_DIR "/zh.png");
++      icon = g_strdup_printf("%s%s", appdir, IBUS_RIME_ICONS_DIR "/zh.png");
        /* schema_name is ".default" in switcher */
        if (status->schema_name && status->schema_name[0] != '.') {
          label = ibus_text_new_from_string(status->schema_name);
-@@ -265,6 +274,8 @@ static void ibus_rime_update_status(IBusRimeEngine *rime_engine,
+@@ -265,6 +273,7 @@ static void ibus_rime_update_status(IBusRimeEngine *rime_engine,
      ibus_property_set_label(prop, label);
      ibus_engine_update_property((IBusEngine *)rime_engine, prop);
    }
-+  g_free(cwd);
 +  g_free(icon);
  }
  
  static void ibus_rime_engine_update(IBusRimeEngine *rime_engine)
+diff --git a/rime_main.c b/rime_main.c
+index bd98eae..86946d9 100644
+--- a/rime_main.c
++++ b/rime_main.c
+@@ -22,6 +22,7 @@
+ #define DISTRIBUTION_VERSION RIME_VERSION
+ 
+ RimeApi *rime_api = NULL;
++gchar *shared_data_dir;
+ 
+ static const char* get_ibus_rime_user_data_dir(char *path) {
+   const char* home = getenv("HOME");
+@@ -168,7 +169,7 @@ static void unload_modules() {
+ }
+ 
+ static void fill_traits(RimeTraits *traits) {
+-  traits->shared_data_dir = IBUS_RIME_SHARED_DATA_DIR;
++  traits->shared_data_dir = shared_data_dir;
+   traits->distribution_name = DISTRIBUTION_NAME;
+   traits->distribution_code_name = DISTRIBUTION_CODE_NAME;
+   traits->distribution_version = DISTRIBUTION_VERSION;
+@@ -278,6 +279,8 @@ int main(gint argc, gchar** argv) {
+   signal(SIGINT, sigterm_cb);
+ 
+   rime_api = rime_get_api();
++  shared_data_dir = g_strdup_printf("%s%s", g_getenv("APPDIR"), IBUS_RIME_SHARED_DATA_DIR);
+   rime_with_ibus();
++  g_free(shared_data_dir);
+   return 0;
+ }
 -- 
 2.20.1
 

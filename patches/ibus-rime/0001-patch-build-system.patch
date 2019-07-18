@@ -1,4 +1,4 @@
-From 07f235b41f1b2a9fc7d4c9ee189fc8d998b7747c Mon Sep 17 00:00:00 2001
+From 890f645efa04bb04de890d033d95ab8802295196 Mon Sep 17 00:00:00 2001
 From: Chunhui He <hchunhui@mail.ustc.edu.cn>
 Date: Sat, 13 Jul 2019 11:12:37 +0000
 Subject: [PATCH 1/3] patch build system

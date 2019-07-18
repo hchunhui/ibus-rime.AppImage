@@ -1,28 +1,29 @@
 #!/bin/sh
 BASE="$(basename "$ARGV0")"
-cd "$APPDIR/usr"
+BINDIR="$APPDIR/usr/bin"
 
-if [ -f "bin/$BASE" ]; then
-    exec "bin/$BASE" "$@"
+if [ -f "$BINDIR/$BASE" ]; then
+    exec "$BINDIR/$BASE" "$@"
 fi
 
 if [ $# -ge 1 ]; then
-    APP="bin/$1"
+    APP="$BINDIR/$1"
     if [ -f "$APP" ]; then
 	shift
 	exec "$APP" "$@"
     fi
 
     echo "Usage: $ARGV0 [command [arguments...]]" 1>&2
+    echo 1>&2
     echo "Run without command to setup." 1>&2
     echo 1>&2
     echo "Available commands:" 1>&2
-    ls -1 bin 1>&2
+    ls -1 "$BINDIR" 1>&2
     exit 1
 fi
 
 if ! which ibus > /dev/null ; then
-    bin/notify-send -u critical "ibus-rime setup" "ibus not found!"
+    "$BINDIR/notify-send" -u critical "ibus-rime setup" "ibus not found!"
     echo "ibus not found!"
     exit 1
 fi
@@ -40,12 +41,12 @@ setup() {
 
     IBUS_COMPONENT_PATH="$LOCAL_DIR":"$IBUS_PREFIX/share/ibus/component" ibus write-cache &&
 
-    bin/rime_deployer --build "$USER_DIR" share/rime-data
+    "$BINDIR/rime_deployer" --build "$USER_DIR" share/rime-data
 }
 
-bin/notify-send "ibus-rime setup" "Deploying..."
+"$BINDIR/notify-send" "ibus-rime setup" "Deploying..."
 if ! setup ; then
-    bin/notify-send -u critical "ibus-rime setup" "Fail!"
+    "$BINDIR/notify-send" -u critical "ibus-rime setup" "Fail!"
 else
-    bin/notify-send "ibus-rime setup" "Done! Please restart ibus."
+    "$BINDIR/notify-send" "ibus-rime setup" "Done! Please restart ibus."
 fi
