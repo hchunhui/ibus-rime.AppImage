@@ -3,14 +3,15 @@ BASE="$(basename "$ARGV0")"
 BINDIR="$APPDIR/usr/bin"
 
 if [ -f "$BINDIR/$BASE" ]; then
-    exec "$BINDIR/$BASE" "$@"
+    exec "$APPDIR/usr/lib/exec0" "$BINDIR/$BASE" "$@"
 fi
 
 if [ $# -ge 1 ]; then
     APP="$BINDIR/$1"
     if [ -f "$APP" ]; then
-	shift
-	exec "$APP" "$@"
+        ARGV0="$ARGV0 $1"
+        shift
+        exec "$APPDIR/usr/lib/exec0" "$APP" "$@"
     fi
 
     echo "Usage: $ARGV0 [command [arguments...]]" 1>&2

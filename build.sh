@@ -112,6 +112,7 @@ bundle() {
     cp ibus_rime.yaml AppDir/usr/share/rime-data/ &&
     echo 'EOF' >> version &&
     cp version AppDir/usr/bin &&
+    gcc -O2 -o AppDir/usr/lib/exec0 tools/exec0.c &&
     ./appimagetool-x86_64.AppImage AppDir
 }
 
