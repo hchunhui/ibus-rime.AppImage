@@ -42,7 +42,7 @@ setup() {
 
     IBUS_COMPONENT_PATH="$LOCAL_DIR":"$IBUS_PREFIX/share/ibus/component" ibus write-cache &&
 
-    "$BINDIR/rime_deployer" --build "$USER_DIR" share/rime-data
+    "$BINDIR/rime_deployer" --build "$USER_DIR" "$APPDIR/usr/share/rime-data"
 }
 
 "$BINDIR/notify-send" "ibus-rime setup" "Deploying..."
