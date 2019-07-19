@@ -93,36 +93,56 @@ fetch_plum() {
     popd
 }
 
+patch_exe () {
+    cp "$1/$2" AppDir/usr/bin &&
+    ./patchelf AppDir/usr/bin/"$2" --set-rpath '$ORIGIN/../lib'
+}
+
+patch_lib () {
+    cp "$1/$2" AppDir/usr/lib &&
+    ./patchelf AppDir/usr/lib/"$2" --set-rpath '$ORIGIN'
+}
+
 bundle() {
     cp ibus-rime/icons/rime.png AppDir/ibus-rime.png &&
-    ./linuxdeploy-x86_64.AppImage \
-	-e /usr/bin/notify-send \
-	-e ibus-rime/build/ibus-engine-rime \
-	-e librime/build/bin/rime_deployer \
-	-e librime/build/bin/rime_dict_manager \
-	-e librime/build/bin/rime_patch \
-	-l librime/build/lib/librime-lua.so \
-	-l librime/build/lib/librime-octagram.so \
-	-e librime/build/plugins/octagram/bin/build_grammar \
-	--appdir=AppDir &&
+
+    mkdir -p AppDir/usr/bin &&
+    mkdir -p AppDir/usr/lib &&
+    patch_exe /usr/bin notify-send &&
+    patch_exe ibus-rime/build ibus-engine-rime &&
+    patch_exe librime/build/bin rime_deployer &&
+    patch_exe librime/build/bin rime_dict_manager &&
+    patch_exe librime/build/bin rime_patch &&
+    patch_lib librime/build/lib librime.so.1 &&
+    patch_lib librime/build/lib librime-lua.so &&
+    patch_lib librime/build/lib librime-octagram.so &&
+    patch_lib "/usr/lib/$(gcc -print-multiarch)" libnotify.so.4 &&
+    patch_exe librime/build/plugins/octagram/bin build_grammar &&
+
     mkdir -p AppDir/usr/share/ibus-rime &&
     cp -r ibus-rime/icons AppDir/usr/share/ibus-rime/ &&
     mv plum/output AppDir/usr/share/rime-data &&
     cp -r librime/thirdparty/share/opencc AppDir/usr/share/rime-data/ &&
     cp ibus_rime.yaml AppDir/usr/share/rime-data/ &&
+
     echo 'EOF' >> version &&
     cp version AppDir/usr/bin &&
     gcc -O2 -o AppDir/usr/lib/exec0 tools/exec0.c &&
+
     ./appimagetool-x86_64.AppImage AppDir
+}
+
+fetch_build_patchelf() {
+    git clone https://github.com/NixOS/patchelf.git --depth=1 patchelf-src &&
+    g++ patchelf-src/src/patchelf.cc -Wall -std=c++11 -D_FILE_OFFSET_BITS=64 -DPACKAGE_STRING='""' -DPAGESIZE=`getconf PAGESIZE` -o patchelf
 }
 
 set -x
 echo -e '#!/bin/sh\ncat << EOF' > version &&
 chmod +x version &&
 wget "https://github.com/AppImage/AppImageKit/releases/download/12/appimagetool-x86_64.AppImage" &&
-wget "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage" &&
 chmod +x appimagetool-x86_64.AppImage &&
-chmod +x linuxdeploy-x86_64.AppImage &&
+fetch_build_patchelf &&
 fetch_boost_mini &&
 fetch_librime &&
 
