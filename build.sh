@@ -5,10 +5,6 @@ H="$PWD"
 INC_PATH="$H/librime/thirdparty/include"
 LIB_PATH="$H/librime/thirdparty/lib"
 
-get_version() {
-    git describe --always
-}
-
 fetch_boost_mini() {
     pushd . &&
     cd boost &&
@@ -22,7 +18,6 @@ fetch_boost_mini() {
 fetch_plugin() {
     ./install-plugins.sh "$1/librime-$2" &&
     cd "plugins/$2" &&
-    echo "librime-$2 `get_version`" >> $H/version &&
     if [ -e "travis-install.sh" ]; then
         bash ./travis-install.sh
     fi &&
@@ -33,7 +28,6 @@ fetch_librime() {
     pushd . &&
     git clone --shallow-exclude='1.5.0' https://github.com/rime/librime.git --recursive &&
     cd librime &&
-    echo "librime `get_version`" >> $H/version &&
     patch -p1 < "$H/patches/librime/0001-link-boost-mini.patch" &&
     patch -p1 < "$H/patches/librime/0002-thirdparty-PIC.patch" &&
     fetch_plugin lotem octagram &&
@@ -45,7 +39,6 @@ fetch_ibus_rime() {
     pushd . &&
     git clone --shallow-exclude='1.3.0' https://github.com/rime/ibus-rime.git &&
     cd ibus-rime &&
-    echo "ibus-rime `get_version`" >> $H/version &&
     patch -p1 < "$H/patches/ibus-rime/0001-patch-build-system.patch" &&
     patch -p1 < "$H/patches/ibus-rime/0002-relocatable.patch" &&
     patch -p1 < "$H/patches/ibus-rime/0003-my-color-scheme.patch" && # XXX
@@ -125,7 +118,14 @@ bundle() {
     cp -r librime/thirdparty/share/opencc AppDir/usr/share/rime-data/ &&
     cp ibus_rime.yaml AppDir/usr/share/rime-data/ &&
 
+    echo -e -n '#!/bin/sh\ncat << '"'EOF'"'\nPackaged by ' > version &&
+    ./appimagetool-x86_64.AppImage --version 2>> version &&
+    echo '---' >> version &&
+    (echo Source Version From && (find * .git -path '*.git' -exec ./describe '{}' \; | sort)) | column -t >> version &&
+    echo '---' >> version &&
+    (echo Binary From && (apt-get download --print-uris libnotify4 libnotify-bin | tr -d "'" | awk '{print $2" "$1}')) | column -t >> version &&
     echo 'EOF' >> version &&
+    chmod +x version &&
     cp version AppDir/usr/bin &&
     gcc -O2 -o AppDir/usr/lib/exec0 tools/exec0.c &&
 
@@ -138,8 +138,6 @@ fetch_build_patchelf() {
 }
 
 set -x
-echo -e '#!/bin/sh\ncat << EOF' > version &&
-chmod +x version &&
 wget "https://github.com/AppImage/AppImageKit/releases/download/12/appimagetool-x86_64.AppImage" &&
 chmod +x appimagetool-x86_64.AppImage &&
 fetch_build_patchelf &&
