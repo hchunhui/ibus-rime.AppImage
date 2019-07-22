@@ -120,6 +120,9 @@ bundle() {
 
     echo -e -n '#!/bin/sh\ncat << '"'EOF'"'\nPackaged by ' > version &&
     ./appimagetool-x86_64.AppImage --version 2>> version &&
+    if [ -n "${TRAVIS_BUILD_WEB_URL}" ]; then
+        echo "Travis CI build log: ${TRAVIS_BUILD_WEB_URL}" 2>> version
+    fi &&
     echo '---' >> version &&
     (echo Source Version From && (find * .git -path '*.git' -exec ./describe '{}' \; | sort)) | column -t >> version &&
     echo '---' >> version &&
@@ -135,6 +138,19 @@ bundle() {
 fetch_build_patchelf() {
     git clone https://github.com/NixOS/patchelf.git --depth=1 patchelf-src &&
     g++ patchelf-src/src/patchelf.cc -Wall -std=c++11 -D_FILE_OFFSET_BITS=64 -DPACKAGE_STRING='""' -DPAGESIZE=`getconf PAGESIZE` -o patchelf
+}
+
+check() {
+    file=ibus-rime-x86_64.AppImage
+    md5sum=$(md5sum "$file" | cut -d' ' -f1)
+    sha1sum=$(sha1sum "$file" | cut -d' ' -f1)
+    sha256sum=$(sha256sum "$file" | cut -d' ' -f1)
+    echo "------"
+    echo "$file:"
+    echo ""
+    echo "MD5 checksum: $md5sum"
+    echo "SHA1 checksum: $sha1sum"
+    echo "SHA256 checksum: $sha256sum"
 }
 
 set -x
@@ -154,3 +170,6 @@ build_ibus_rime &&
 fetch_plum &&
 
 bundle
+
+set +x
+check
