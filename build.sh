@@ -121,7 +121,7 @@ bundle() {
     echo -e -n '#!/bin/sh\ncat << '"'EOF'"'\nPackaged by ' > version &&
     ./appimagetool-x86_64.AppImage --version 2>> version &&
     if [ -n "${TRAVIS_BUILD_WEB_URL}" ]; then
-        echo "Travis CI build log: ${TRAVIS_BUILD_WEB_URL}" 2>> version
+        echo "Travis CI build log: ${TRAVIS_BUILD_WEB_URL}" >> version
     fi &&
     echo '---' >> version &&
     (echo Source Version From && (find * .git -path '*.git' -exec ./describe '{}' \; | sort)) | column -t >> version &&
