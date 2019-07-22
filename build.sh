@@ -124,7 +124,7 @@ bundle() {
         echo "Travis CI build log: ${TRAVIS_BUILD_WEB_URL}" >> version
     fi &&
     echo '---' >> version &&
-    (echo Source Version From && (find * .git -path '*.git' -exec ./describe '{}' \; | sort)) | column -t >> version &&
+    (echo Source Version From && (find * .git -path '*.git' -exec ./describe '{}' \; | LC_ALL=C sort)) | column -t >> version &&
     echo '---' >> version &&
     (echo Binary From && (apt-get download --print-uris libnotify4 libnotify-bin | tr -d "'" | awk '{print $2" "$1}')) | column -t >> version &&
     echo 'EOF' >> version &&
