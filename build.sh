@@ -154,6 +154,9 @@ check() {
 }
 
 set -x
+
+git tag -d continuous
+
 wget "https://github.com/AppImage/AppImageKit/releases/download/12/appimagetool-x86_64.AppImage" &&
 chmod +x appimagetool-x86_64.AppImage &&
 fetch_build_patchelf &&
