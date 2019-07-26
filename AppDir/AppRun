@@ -40,7 +40,11 @@ setup() {
         -e "s#%ENGINE%#$APPIMAGE#g" \
         "$APPDIR/rime.xml.in" > "$LOCAL_DIR/rime.xml" &&
 
-    IBUS_COMPONENT_PATH="$LOCAL_DIR":"$IBUS_PREFIX/share/ibus/component" ibus write-cache &&
+    if ibus read-cache --system ; then
+        pkexec env IBUS_COMPONENT_PATH="$LOCAL_DIR":"$IBUS_PREFIX/share/ibus/component" ibus write-cache --system
+    else
+        IBUS_COMPONENT_PATH="$LOCAL_DIR":"$IBUS_PREFIX/share/ibus/component" ibus write-cache
+    fi &&
 
     "$BINDIR/rime_deployer" --build "$USER_DIR" "$APPDIR/usr/share/rime-data"
 }
