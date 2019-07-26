@@ -136,7 +136,8 @@ bundle() {
 }
 
 fetch_build_patchelf() {
-    git clone https://github.com/NixOS/patchelf.git --depth=1 patchelf-src &&
+    git clone -b '0.10' --depth=1 https://github.com/NixOS/patchelf.git patchelf-src &&
+    cd patchelf-src && patch -p1 < ../patches/patchelf/adjust_startPage_issue127_commit1cc234fea.patch && cd .. &&
     g++ patchelf-src/src/patchelf.cc -Wall -std=c++11 -D_FILE_OFFSET_BITS=64 -DPACKAGE_STRING='""' -DPAGESIZE=`getconf PAGESIZE` -o patchelf
 }
 
