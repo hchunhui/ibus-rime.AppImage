@@ -29,15 +29,24 @@ if ! which ibus > /dev/null ; then
     exit 1
 fi
 
+quote_string () {
+    echo "$1" |
+	sed "s/'/\'\\\'\'/g" | sed "s/^\(.*\)$/'\1'/g" |  # shell quote
+	sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' | # xml quote
+	sed 's/\\/\\\\/g' | sed 's/&/\\\&/g' | sed 's/#/\\#/g' # sed quote
+}
+
 setup() {
     IBUS_PREFIX="$(dirname $(which ibus))/.."
     USER_DIR="$HOME/.config/ibus/rime"
     LOCAL_DIR="$USER_DIR/appimage"
+    QUOTED_ENGINE_PATH=$(quote_string "$APPIMAGE")
+    QUOTED_ICON_PATH=$(quote_string "$LOCAL_DIR/ibus-rime.png")
 
     mkdir -p "$LOCAL_DIR" &&
     cp "$APPDIR/ibus-rime.png" "$LOCAL_DIR" &&
-    sed -e "s#%ICON%#$LOCAL_DIR/ibus-rime.png#g" \
-        -e "s#%ENGINE%#$APPIMAGE#g" \
+    sed -e "s#%ICON%#$QUOTED_ICON_PATH#g" \
+        -e "s#%ENGINE%#$QUOTED_ENGINE_PATH#g" \
         "$APPDIR/rime.xml.in" > "$LOCAL_DIR/rime.xml" &&
 
     if ibus read-cache --system ; then
