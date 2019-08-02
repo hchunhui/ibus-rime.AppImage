@@ -52,7 +52,7 @@ setup() {
         -e "s#%ENGINE%#$QUOTED_ENGINE_PATH#g" \
         "$APPDIR/rime.xml.in" > "$LOCAL_DIR/rime.xml" &&
 
-    if ibus read-cache --system ; then
+    if ibus read-cache --system 2> /dev/null ; then
         pkexec env IBUS_COMPONENT_PATH="$LOCAL_DIR":"$IBUS_PREFIX/share/ibus/component" ibus write-cache --system
     else
         IBUS_COMPONENT_PATH="$LOCAL_DIR":"$IBUS_PREFIX/share/ibus/component" ibus write-cache
