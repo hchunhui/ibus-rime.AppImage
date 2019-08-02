@@ -35,15 +35,15 @@ index 04c6f5a..bf9e167 100644
  	-DCMAKE_BUILD_TYPE:STRING="Release" \
  	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
  	&& cmake --build build --target install
-@@ -50,6 +53,7 @@ marisa:
+@@ -50,7 +53,6 @@ marisa:
  opencc:
  	cd $(SRC_DIR)/opencc; \
  	cmake . -Bbuild \
-+	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
- 	-DBUILD_SHARED_LIBS:BOOL=OFF \
+-	-DBUILD_SHARED_LIBS:BOOL=OFF \
  	-DCMAKE_BUILD_TYPE:STRING="Release" \
  	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
-@@ -58,6 +62,7 @@ opencc:
+ 	&& cmake --build build --target install
+@@ -58,6 +60,7 @@ opencc:
  yaml-cpp:
  	cd $(SRC_DIR)/yaml-cpp; \
  	cmake . -Bbuild \
@@ -51,7 +51,7 @@ index 04c6f5a..bf9e167 100644
  	-DYAML_CPP_BUILD_CONTRIB:BOOL=OFF \
  	-DYAML_CPP_BUILD_TESTS:BOOL=OFF \
  	-DYAML_CPP_BUILD_TOOLS:BOOL=OFF \
-@@ -68,6 +73,7 @@ yaml-cpp:
+@@ -68,6 +71,7 @@ yaml-cpp:
  gtest:
  	cd $(SRC_DIR)/googletest; \
  	cmake . -Bbuild \

@@ -109,6 +109,10 @@ bundle() {
     patch_lib librime/build/lib librime.so.1 &&
     patch_lib librime/build/lib librime-lua.so &&
     patch_lib librime/build/lib librime-octagram.so &&
+    patch_lib librime/thirdparty/lib libopencc.so.2 &&
+    patch_exe librime/thirdparty/bin opencc &&
+    patch_exe librime/thirdparty/bin opencc_dict &&
+    patch_exe librime/thirdparty/bin opencc_phrase_extract &&
     patch_lib "/usr/lib/$(gcc -print-multiarch)" libnotify.so.4 &&
     patch_exe librime/build/plugins/octagram/bin build_grammar &&
 
