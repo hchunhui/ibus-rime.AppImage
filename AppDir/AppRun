@@ -23,7 +23,7 @@ if [ $# -ge 1 ]; then
     exit 1
 fi
 
-if ! which ibus > /dev/null ; then
+if ! command -v ibus > /dev/null ; then
     "$BINDIR/notify-send" -u critical "ibus-rime setup" "ibus not found!"
     echo "ibus not found!"
     exit 1
@@ -40,7 +40,7 @@ quote_string () {
 }
 
 setup() {
-    IBUS_PREFIX="$(dirname $(which ibus))/.."
+    IBUS_PREFIX="$(dirname "$(dirname "$(command -v ibus)")")"
     USER_DIR="$HOME/.config/ibus/rime"
     LOCAL_DIR="$USER_DIR/appimage"
     QUOTED_ENGINE_PATH="$(quote_string "$(quote_shell "$APPIMAGE")")"
