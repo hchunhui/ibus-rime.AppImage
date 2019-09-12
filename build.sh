@@ -88,11 +88,13 @@ fetch_plum() {
 
 patch_exe () {
     cp "$1/$2" AppDir/usr/bin &&
+    strip AppDir/usr/bin/"$2" &&
     ./patchelf AppDir/usr/bin/"$2" --set-rpath '$ORIGIN/../lib'
 }
 
 patch_lib () {
     cp "$1/$2" AppDir/usr/lib &&
+    strip AppDir/usr/lib/"$2" &&
     ./patchelf AppDir/usr/lib/"$2" --set-rpath '$ORIGIN'
 }
 
