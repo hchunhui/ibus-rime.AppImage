@@ -1,25 +1,25 @@
-From 1629d71abc999ea0bb74a5b35177f52077fc76d9 Mon Sep 17 00:00:00 2001
+From 8da75b5fdfd1506c2c40cd2c2455a04cf0f12862 Mon Sep 17 00:00:00 2001
 From: Chunhui He <hchunhui@mail.ustc.edu.cn>
 Date: Sat, 28 Sep 2019 04:32:19 +0000
 Subject: [PATCH 3/3] build snappy
 
 ---
- CMakeLists.txt |  1 +
- thirdparty.mk  | 15 +++++++++++++--
+ src/CMakeLists.txt |  1 +
+ thirdparty.mk      | 15 +++++++++++++--
  2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 3989c6a..163f179 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -118,6 +118,7 @@ endif()
- find_package(LevelDb REQUIRED)
- if(LevelDb_FOUND)
-     include_directories(${LevelDb_INCLUDE_PATH})
-+    link_libraries(snappy)
- endif()
- 
- find_package(Marisa REQUIRED)
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 47f2fd6..7e59668 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -44,6 +44,7 @@ set(rime_core_deps
+     ${rime_optional_deps})
+ set(rime_dict_deps
+     ${LevelDb_LIBRARY}
++    snappy
+     ${Marisa_LIBRARY})
+ set(rime_gears_deps
+     ${ICONV_LIBRARIES}
 diff --git a/thirdparty.mk b/thirdparty.mk
 index 521af14..567bbce 100644
 --- a/thirdparty.mk
