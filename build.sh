@@ -26,9 +26,16 @@ fetch_plugin() {
 
 fetch_librime() {
     pushd . &&
-    git clone --shallow-exclude='1.5.0' https://github.com/rime/librime.git --recursive &&
+    git clone --shallow-exclude='1.5.0' https://github.com/rime/librime.git &&
     cd librime &&
-    cd thirdparty/src && git clone https://github.com/google/snappy.git && cd ../.. &&
+    cd thirdparty/src &&
+        git clone https://github.com/google/snappy.git snappy &&
+        git clone https://github.com/google/glog.git glog &&
+        git clone https://github.com/google/leveldb.git leveldb &&
+        git clone https://github.com/s-yata/marisa-trie.git marisa-trie &&
+        git clone https://github.com/BYVoid/OpenCC.git opencc &&
+        git clone https://github.com/jbeder/yaml-cpp.git yaml-cpp &&
+    cd ../.. &&
     patch -p1 < "$H/patches/librime/0001-link-boost-mini.patch" &&
     patch -p1 < "$H/patches/librime/0002-thirdparty-PIC.patch" &&
     patch -p1 < "$H/patches/librime/0003-build-snappy.patch" &&
@@ -70,7 +77,12 @@ build_thirdparty() {
 
 build_librime() {
     cd librime &&
-    make -j"$J" &&
+    cmake . -Bbuild \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_TEST=OFF \
+        -DBUILD_MERGED_PLUGINS=OFF &&
+    cmake --build build &&
     cd ..
 }
 
