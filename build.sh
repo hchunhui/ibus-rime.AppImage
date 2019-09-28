@@ -28,8 +28,10 @@ fetch_librime() {
     pushd . &&
     git clone --shallow-exclude='1.5.0' https://github.com/rime/librime.git --recursive &&
     cd librime &&
+    cd thirdparty/src && git clone https://github.com/google/snappy.git && cd ../.. &&
     patch -p1 < "$H/patches/librime/0001-link-boost-mini.patch" &&
     patch -p1 < "$H/patches/librime/0002-thirdparty-PIC.patch" &&
+    patch -p1 < "$H/patches/librime/0003-build-snappy.patch" &&
     fetch_plugin lotem octagram &&
     fetch_plugin hchunhui lua &&
     popd

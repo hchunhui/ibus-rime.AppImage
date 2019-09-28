@@ -1,0 +1,65 @@
+From 1629d71abc999ea0bb74a5b35177f52077fc76d9 Mon Sep 17 00:00:00 2001
+From: Chunhui He <hchunhui@mail.ustc.edu.cn>
+Date: Sat, 28 Sep 2019 04:32:19 +0000
+Subject: [PATCH 3/3] build snappy
+
+---
+ CMakeLists.txt |  1 +
+ thirdparty.mk  | 15 +++++++++++++--
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 3989c6a..163f179 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -118,6 +118,7 @@ endif()
+ find_package(LevelDb REQUIRED)
+ if(LevelDb_FOUND)
+     include_directories(${LevelDb_INCLUDE_PATH})
++    link_libraries(snappy)
+ endif()
+ 
+ find_package(Marisa REQUIRED)
+diff --git a/thirdparty.mk b/thirdparty.mk
+index 521af14..567bbce 100644
+--- a/thirdparty.mk
++++ b/thirdparty.mk
+@@ -7,7 +7,7 @@ LIB_DIR = $(THIRD_PARTY_DIR)/lib
+ BIN_DIR = $(THIRD_PARTY_DIR)/bin
+ SHARE_DIR = $(THIRD_PARTY_DIR)/share
+ 
+-THIRD_PARTY_LIBS = glog leveldb marisa opencc yaml-cpp gtest
++THIRD_PARTY_LIBS = snappy glog leveldb marisa opencc yaml-cpp
+ 
+ .PHONY: all clean-src $(THIRD_PARTY_LIBS)
+ 
+@@ -22,6 +22,16 @@ clean-src:
+ 	rm -r $(SRC_DIR)/opencc/build || true
+ 	rm -r $(SRC_DIR)/yaml-cpp/build || true
+ 
++snappy:
++	cd $(SRC_DIR)/snappy; \
++	cmake . -Bcmake-build \
++	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
++	-DBUILD_SHARED_LIBS:BOOL=OFF \
++	-DSNAPPY_BUILD_TESTS:BOOL=OFF \
++	-DCMAKE_BUILD_TYPE:STRING="Release" \
++	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
++	&& cmake --build cmake-build --target install
++
+ glog:
+ 	cd $(SRC_DIR)/glog; \
+ 	cmake . -Bcmake-build \
+@@ -34,7 +44,8 @@ glog:
+ 
+ leveldb:
+ 	cd $(SRC_DIR)/leveldb; \
+-	cmake . -Bbuild \
++	CXXFLAGS="-I$(INCLUDE_DIR)" LDFLAGS="-L$(LIB_DIR)" cmake . -Bbuild \
++	-DHAVE_SNAPPY=1 \
+ 	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
+ 	-DLEVELDB_BUILD_BENCHMARKS:BOOL=OFF \
+ 	-DLEVELDB_BUILD_TESTS:BOOL=OFF \
+-- 
+2.20.1
+
