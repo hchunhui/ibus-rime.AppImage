@@ -1,0 +1,30 @@
+From db00a3ce443867485fb6f58e8aff646d76428447 Mon Sep 17 00:00:00 2001
+From: Chunhui He <hchunhui@mail.ustc.edu.cn>
+Date: Fri, 3 Jan 2020 14:00:39 +0000
+Subject: [PATCH] relocatable opencc
+
+---
+ src/Common.hpp | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/src/Common.hpp b/src/Common.hpp
+index 9d8d69a..de11b80 100644
+--- a/src/Common.hpp
++++ b/src/Common.hpp
+@@ -81,11 +81,8 @@ typedef std::shared_ptr<SerializableDict> SerializableDictPtr;
+ typedef std::shared_ptr<TextDict> TextDictPtr;
+ }
+ 
+-#ifndef PKGDATADIR
+-const string PACKAGE_DATA_DIRECTORY = "";
+-#else // ifndef PKGDATADIR
+-const string PACKAGE_DATA_DIRECTORY = PKGDATADIR "/";
+-#endif // ifndef PKGDATADIR
++static const char *app_dir = getenv("APPDIR");
++const string PACKAGE_DATA_DIRECTORY = app_dir ? string(app_dir) + "/usr/share/rime-data/opencc/" : "";
+ 
+ #ifndef VERSION
+ #define VERSION "1.0.*"
+-- 
+2.20.1
+

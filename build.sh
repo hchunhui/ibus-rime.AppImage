@@ -35,6 +35,9 @@ fetch_librime() {
         git clone https://github.com/s-yata/marisa-trie.git marisa-trie &&
         git clone https://github.com/BYVoid/OpenCC.git opencc &&
         git clone https://github.com/jbeder/yaml-cpp.git yaml-cpp &&
+    cd opencc &&
+    patch -p1 < "$H/patches/opencc/0001-relocatable-opencc.patch" &&
+    cd .. &&
     cd ../.. &&
     patch -p1 < "$H/patches/librime/0001-link-boost-mini.patch" &&
     patch -p1 < "$H/patches/librime/0002-thirdparty-PIC.patch" &&
