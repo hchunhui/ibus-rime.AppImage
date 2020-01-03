@@ -39,14 +39,9 @@ fetch_librime() {
     patch -p1 < "$H/patches/opencc/0001-relocatable-opencc.patch" &&
     cd .. &&
     cd ../.. &&
-    patch -p1 < "$H/patches/librime/0001-link-boost-mini.patch" &&
-    patch -p1 < "$H/patches/librime/0002-thirdparty-PIC.patch" &&
-    patch -p1 < "$H/patches/librime/0003-build-snappy.patch" &&
     fetch_plugin rime charcode &&
     fetch_plugin lotem octagram &&
     fetch_plugin hchunhui lua &&
-    cd plugins/charcode &&
-    patch -p1 < "$H/patches/librime-charcode/0001-link-boost-mini.patch" &&
     popd
 }
 
@@ -54,7 +49,7 @@ fetch_ibus_rime() {
     pushd . &&
     git clone --shallow-exclude='1.3.0' https://github.com/rime/ibus-rime.git &&
     cd ibus-rime &&
-    patch -p1 < "$H/patches/ibus-rime/0001-patch-build-system.patch" &&
+    cp "$H/cmake/FindRime.cmake" cmake &&
     patch -p1 < "$H/patches/ibus-rime/0002-relocatable.patch" &&
     patch -p1 < "$H/patches/ibus-rime/0003-my-color-scheme.patch" && # XXX
     popd
@@ -77,7 +72,7 @@ build_boost_mini() {
 
 build_thirdparty() {
     cd librime &&
-    make thirdparty -j"$J" &&
+    make -f ../thirdparty.mk -j"$J" &&
     cd ..
 }
 
@@ -88,7 +83,8 @@ build_librime() {
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_TEST=OFF \
         -DBUILD_WITH_ICU=OFF \
-        -DBUILD_MERGED_PLUGINS=OFF &&
+        -DBUILD_MERGED_PLUGINS=OFF \
+        -DCMAKE_MODULE_PATH="$H/cmake" &&
     cmake --build build &&
     cd ..
 }
