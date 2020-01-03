@@ -1,0 +1,34 @@
+From 04b19983151c0d5bdd7ecd31a0a9d125ccbb3d87 Mon Sep 17 00:00:00 2001
+From: Chunhui He <hchunhui@mail.ustc.edu.cn>
+Date: Fri, 3 Jan 2020 13:01:22 +0000
+Subject: [PATCH] link boost-mini
+
+---
+ CMakeLists.txt | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 899dd8f..0c2132f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -12,11 +12,12 @@ if (ICONV_FOUND)
+   include_directories(${ICONV_INCLUDE_DIRS})
+ endif()
+ 
+-find_package(Boost 1.46.0 REQUIRED COMPONENTS locale)
+-if(Boost_FOUND)
+-  include_directories(${Boost_INCLUDE_DIRS})
+-  link_directories(${Boost_LIBRARY_DIRS})
+-endif()
++#find_package(Boost 1.46.0 REQUIRED COMPONENTS locale)
++#if(Boost_FOUND)
++#  include_directories(${Boost_INCLUDE_DIRS})
++#  link_directories(${Boost_LIBRARY_DIRS})
++#endif()
++link_libraries(boost-mini)
+ 
+ aux_source_directory(src charcode_src)
+ 
+-- 
+2.20.1
+

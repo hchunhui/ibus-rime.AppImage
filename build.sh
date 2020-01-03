@@ -42,6 +42,8 @@ fetch_librime() {
     fetch_plugin rime charcode &&
     fetch_plugin lotem octagram &&
     fetch_plugin hchunhui lua &&
+    cd plugins/charcode &&
+    patch -p1 < "$H/patches/librime-charcode/0001-link-boost-mini.patch" &&
     popd
 }
 
