@@ -142,6 +142,11 @@ bundle() {
     cp -r librime/thirdparty/share/opencc AppDir/usr/share/rime-data/ &&
     cp ibus_rime.yaml AppDir/usr/share/rime-data/ &&
 
+    mkdir -p AppDir/usr/plum &&
+    cd plum && (git archive master | tar -xv -C ../AppDir/usr/plum) && cd .. &&
+    cd AppDir/usr/plum && patch -p1 < "$H/patches/plum/0001-relocatable-plum.patch" && cd ../../.. &&
+    cd AppDir/usr/bin && ln -s ../plum/rime-install rime-install && cd ../../.. &&
+
     echo -e -n '#!/bin/sh\ncat << '"'EOF'"'\nPackaged by ' > version &&
     ./appimagetool-x86_64.AppImage --version 2>> version &&
     if [ -n "${TRAVIS_BUILD_WEB_URL}" ]; then

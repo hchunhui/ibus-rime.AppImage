@@ -1,0 +1,36 @@
+From f0908871cffe7cfa8b6311f078fb24d299478266 Mon Sep 17 00:00:00 2001
+From: Chunhui He <hchunhui@mail.ustc.edu.cn>
+Date: Fri, 3 Jan 2020 18:44:49 +0000
+Subject: [PATCH] relocatable plum
+
+---
+ rime-install                | 1 +
+ scripts/install-packages.sh | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/rime-install b/rime-install
+index 0f3f27e..2d71c0e 100755
+--- a/rime-install
++++ b/rime-install
+@@ -1,4 +1,5 @@
+ #!/bin/bash
++plum_dir="$APPDIR/usr/plum"
+ 
+ if [[ -z "${plum_repo}" ]]; then
+     plum_repo='rime/plum'
+diff --git a/scripts/install-packages.sh b/scripts/install-packages.sh
+index 734f1a7..eec03c1 100755
+--- a/scripts/install-packages.sh
++++ b/scripts/install-packages.sh
+@@ -24,7 +24,7 @@ files_updated=0
+ install_package() {
+     local user_name="$(resolve_user_name "$1")"
+     local package_name="$(resolve_package_name "$1")"
+-    local package_dir="${root_dir:-.}/package/${user_name}/${package_name}"
++    local package_dir="$HOME/.config/ibus/rime/appimage/package/${user_name}/${package_name}"
+ 
+     local package="$(resolve_package "$1")"
+     local branch="$(resolve_branch "$1")"
+-- 
+2.20.1
+
