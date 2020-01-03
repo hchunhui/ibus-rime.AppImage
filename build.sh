@@ -39,6 +39,7 @@ fetch_librime() {
     patch -p1 < "$H/patches/librime/0001-link-boost-mini.patch" &&
     patch -p1 < "$H/patches/librime/0002-thirdparty-PIC.patch" &&
     patch -p1 < "$H/patches/librime/0003-build-snappy.patch" &&
+    fetch_plugin rime charcode &&
     fetch_plugin lotem octagram &&
     fetch_plugin hchunhui lua &&
     popd
@@ -81,6 +82,7 @@ build_librime() {
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_TEST=OFF \
+        -DBUILD_WITH_ICU=OFF \
         -DBUILD_MERGED_PLUGINS=OFF &&
     cmake --build build &&
     cd ..
