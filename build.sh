@@ -51,7 +51,6 @@ fetch_ibus_rime() {
     cd ibus-rime &&
     cp "$H/cmake/FindRime.cmake" cmake &&
     patch -p1 < "$H/patches/ibus-rime/0002-relocatable.patch" &&
-    patch -p1 < "$H/patches/ibus-rime/0003-my-color-scheme.patch" && # XXX
     popd
 }
 
