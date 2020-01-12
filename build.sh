@@ -202,7 +202,7 @@ build_ibus_rime &&
 
 fetch_plum &&
 
-bundle
+bundle &&
 
-set +x
+set +x &&
 check
