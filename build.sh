@@ -28,6 +28,7 @@ fetch_librime() {
     pushd . &&
     git clone --shallow-exclude='1.5.0' https://github.com/rime/librime.git &&
     cd librime &&
+    (patch -p1 < "$H/patches/librime/fix.patch" || true) &&
     cd thirdparty/src &&
         git clone https://github.com/google/snappy.git snappy &&
         git clone https://github.com/google/glog.git glog &&
