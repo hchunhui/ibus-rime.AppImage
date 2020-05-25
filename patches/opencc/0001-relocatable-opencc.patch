@@ -14,12 +14,12 @@ index 9d8d69a..de11b80 100644
 @@ -89,7 +89,4 @@
  
 -#ifndef PKGDATADIR
--const string PACKAGE_DATA_DIRECTORY = "";
+-const std::string PACKAGE_DATA_DIRECTORY = "";
 -#else  // ifndef PKGDATADIR
--const string PACKAGE_DATA_DIRECTORY = PKGDATADIR "/";
+-const std::string PACKAGE_DATA_DIRECTORY = PKGDATADIR "/";
 -#endif // ifndef PKGDATADIR
 +static const char *app_dir = getenv("APPDIR");
-+const string PACKAGE_DATA_DIRECTORY = app_dir ? string(app_dir) + "/usr/share/rime-data/opencc/" : "";
++const std::string PACKAGE_DATA_DIRECTORY = app_dir ? std::string(app_dir) + "/usr/share/rime-data/opencc/" : "";
  
 -- 
 2.20.1
