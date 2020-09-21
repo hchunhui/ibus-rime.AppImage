@@ -7,7 +7,7 @@ LIB_DIR = $(THIRD_PARTY_DIR)/lib
 BIN_DIR = $(THIRD_PARTY_DIR)/bin
 SHARE_DIR = $(THIRD_PARTY_DIR)/share
 
-THIRD_PARTY_LIBS = snappy glog leveldb marisa opencc yaml-cpp
+THIRD_PARTY_LIBS = capnproto snappy glog leveldb marisa opencc yaml-cpp
 
 .PHONY: all clean-src $(THIRD_PARTY_LIBS)
 
@@ -21,6 +21,16 @@ clean-src:
 	rm -r $(SRC_DIR)/marisa-trie/build || true
 	rm -r $(SRC_DIR)/opencc/build || true
 	rm -r $(SRC_DIR)/yaml-cpp/build || true
+
+capnproto:
+	cd $(SRC_DIR)/capnproto; \
+	cmake . -Bbuild \
+	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
+	-DBUILD_SHARED_LIBS:BOOL=OFF \
+	-DBUILD_TESTING:BOOL=OFF \
+	-DCMAKE_BUILD_TYPE:STRING="Release" \
+	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
+	&& cmake --build $(build) --target install
 
 snappy:
 	cd $(SRC_DIR)/snappy; \

@@ -26,9 +26,10 @@ fetch_plugin() {
 
 fetch_librime() {
     pushd . &&
-    git clone --shallow-exclude='1.5.0' https://github.com/rime/librime.git &&
+    git clone --shallow-exclude='1.6.0' https://github.com/rime/librime.git &&
     cd librime &&
     cd thirdparty/src &&
+        git clone https://github.com/capnproto/capnproto capnproto &&
         git clone https://github.com/google/snappy.git snappy &&
         git clone https://github.com/google/glog.git glog &&
         git clone https://github.com/google/leveldb.git leveldb &&
