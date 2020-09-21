@@ -30,7 +30,7 @@ capnproto:
 	-DBUILD_TESTING:BOOL=OFF \
 	-DCMAKE_BUILD_TYPE:STRING="Release" \
 	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
-	&& cmake --build $(build) --target install
+	&& cmake --build build --target install
 
 snappy:
 	cd $(SRC_DIR)/snappy; \
