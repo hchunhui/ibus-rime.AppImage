@@ -8,10 +8,10 @@ LIB_PATH="$H/librime/thirdparty/lib"
 fetch_boost_mini() {
     pushd . &&
     cd boost &&
-    git clone -b 'boost-1.54.0' --depth=1 https://github.com/boostorg/system.git &&
-    git clone -b 'boost-1.54.0' --depth=1 https://github.com/boostorg/filesystem.git &&
-    git clone -b 'boost-1.54.0' --depth=1 https://github.com/boostorg/locale.git &&
-    git clone -b 'boost-1.54.0' --depth=1 https://github.com/boostorg/regex.git &&
+    git clone -b 'boost-1.58.0' --depth=1 https://github.com/boostorg/system.git &&
+    git clone -b 'boost-1.58.0' --depth=1 https://github.com/boostorg/filesystem.git &&
+    git clone -b 'boost-1.58.0' --depth=1 https://github.com/boostorg/locale.git &&
+    git clone -b 'boost-1.58.0' --depth=1 https://github.com/boostorg/regex.git &&
     popd
 }
 
