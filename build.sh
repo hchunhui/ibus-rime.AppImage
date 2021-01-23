@@ -39,6 +39,9 @@ fetch_librime() {
     cd opencc &&
     patch -p1 < "$H/patches/opencc/0001-relocatable-opencc.patch" &&
     cd .. &&
+    cd snappy &&
+    patch -p1 < "$H/patches/snappy/add-static.patch" &&
+    cd .. &&
     cd ../.. &&
     fetch_plugin rime charcode &&
     fetch_plugin lotem octagram &&
