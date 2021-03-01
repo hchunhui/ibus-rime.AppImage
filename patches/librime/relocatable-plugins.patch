@@ -1,0 +1,24 @@
+diff --git a/plugins/plugins_module.cc b/plugins/plugins_module.cc
+index 7a567be..44c60a9 100644
+--- a/plugins/plugins_module.cc
++++ b/plugins/plugins_module.cc
+@@ -50,7 +50,7 @@ void PluginManager::LoadPlugins(fs::path plugins_dir) {
+           LOG(INFO) << "loading plugin '" << plugin_name
+                     << "' from " << plugin_file;
+           try {
+-            auto plugin_lib = boost::dll::shared_library(plugin_file);
++            auto plugin_lib = boost::dll::shared_library(plugin_file, boost::dll::load_mode::rtld_global);
+             plugin_libs_[plugin_name] = plugin_lib;
+           } catch (const std::exception& ex) {
+             LOG(ERROR) << "error loading plugin " << plugin_name << ": "
+@@ -95,7 +95,9 @@ PluginManager& PluginManager::instance() {
+ }  // namespace rime
+ 
+ static void rime_plugins_initialize() {
+-  rime::PluginManager::instance().LoadPlugins(RIME_PLUGINS_DIR);
++  auto appdir = getenv("APPDIR");
++  if (appdir)
++    rime::PluginManager::instance().LoadPlugins(fs::path(appdir) / RIME_PLUGINS_DIR);
+ }
+ 
+ static void rime_plugins_finalize() {}

@@ -1,9 +1,0 @@
-plugins:
-  - librime-charcode.so
-  - librime-lua.so
-  - librime-octagram.so
-
-modules:
-  - charcode
-  - lua
-  - grammar

@@ -74,20 +74,6 @@
 
 ## 插件
   预编译 `librime-charcode`、`librime-lua` 和 `librime-octagram` 插件，默认均为加载。
-  可通过修改前端配置文件 `ibus_rime.yaml` 来控制插件的加载。
-
-  例：
-  ```
-  plugins:     # 填要加载的插件文件名，以下文件均已打包在 AppImage 中。
-    - librime-charcode.so
-    - librime-lua.so
-    - librime-octagram.so
-
-  modules:     # 填要激活的插件中的模块名
-    - charcode # 此行激活 `librime-charcode.so` 中的字符集相关组件
-    - lua      # 此行激活 `librime-lua.so` 中的 lua 扩展功能
-    - grammar  # 此行激活 `librime-octagram.so` 中的语言模型
-  ```
 
 ## 相关项目
   - [ibus-rime](https://github.com/rime/ibus-rime)

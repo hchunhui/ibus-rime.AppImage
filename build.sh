@@ -4,14 +4,15 @@ J=1
 H="$PWD"
 INC_PATH="$H/librime/thirdparty/include"
 LIB_PATH="$H/librime/thirdparty/lib"
+BOOST_VERSION="1.58.0"
 
 fetch_boost_mini() {
     pushd . &&
     cd boost &&
-    git clone -b 'boost-1.58.0' --depth=1 https://github.com/boostorg/system.git &&
-    git clone -b 'boost-1.58.0' --depth=1 https://github.com/boostorg/filesystem.git &&
-    git clone -b 'boost-1.58.0' --depth=1 https://github.com/boostorg/locale.git &&
-    git clone -b 'boost-1.58.0' --depth=1 https://github.com/boostorg/regex.git &&
+    git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/system.git &&
+    git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/filesystem.git &&
+    git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/locale.git &&
+    git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/regex.git &&
     popd
 }
 
@@ -28,6 +29,7 @@ fetch_librime() {
     pushd . &&
     git clone --shallow-exclude='1.6.0' https://github.com/rime/librime.git &&
     cd librime &&
+    patch -p1 < "$H/patches/librime/relocatable-plugins.patch" &&
     cd thirdparty/src &&
         git clone https://github.com/capnproto/capnproto capnproto &&
         git clone https://github.com/google/snappy.git snappy &&
@@ -87,6 +89,8 @@ build_librime() {
         -DBUILD_TEST=OFF \
         -DBUILD_WITH_ICU=OFF \
         -DBUILD_MERGED_PLUGINS=OFF \
+        -DENABLE_EXTERNAL_PLUGINS=ON \
+        -DRIME_PLUGINS_DIR="/usr/lib/rime-plugins" \
         -DCMAKE_MODULE_PATH="$H/cmake" &&
     cmake --build build &&
     cd ..
@@ -118,20 +122,27 @@ patch_lib () {
     ./patchelf AppDir/usr/lib/"$2" --set-rpath '$ORIGIN'
 }
 
+patch_plugin () {
+    cp "$1/$2" AppDir/usr/lib/rime-plugins &&
+    strip AppDir/usr/lib/rime-plugins/"$2" &&
+    ./patchelf AppDir/usr/lib/rime-plugins/"$2" --set-rpath '$ORIGIN'
+}
+
 bundle() {
     cp ibus-rime/icons/rime.png AppDir/ibus-rime.png &&
 
     mkdir -p AppDir/usr/bin &&
     mkdir -p AppDir/usr/lib &&
+    mkdir -p AppDir/usr/lib/rime-plugins
     patch_exe /usr/bin notify-send &&
     patch_exe ibus-rime/build ibus-engine-rime &&
     patch_exe librime/build/bin rime_deployer &&
     patch_exe librime/build/bin rime_dict_manager &&
     patch_exe librime/build/bin rime_patch &&
     patch_lib librime/build/lib librime.so.1 &&
-    patch_lib librime/build/lib librime-lua.so &&
-    patch_lib librime/build/lib librime-octagram.so &&
-    patch_lib librime/build/lib librime-charcode.so &&
+    patch_plugin librime/build/lib librime-lua.so &&
+    patch_plugin librime/build/lib librime-octagram.so &&
+    patch_plugin librime/build/lib librime-charcode.so &&
     patch_lib librime/thirdparty/lib libopencc.so.1.1 &&
     patch_exe librime/thirdparty/bin opencc &&
     patch_exe librime/thirdparty/bin opencc_dict &&
@@ -143,7 +154,6 @@ bundle() {
     cp -r ibus-rime/icons AppDir/usr/share/ibus-rime/ &&
     mv plum/output AppDir/usr/share/rime-data &&
     cp -r librime/thirdparty/share/opencc AppDir/usr/share/rime-data/ &&
-    cp ibus_rime.yaml AppDir/usr/share/rime-data/ &&
 
     mkdir -p AppDir/usr/plum &&
     cd plum && (git archive master | tar -xv -C ../AppDir/usr/plum) && cd .. &&
