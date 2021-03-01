@@ -13,6 +13,7 @@ fetch_boost_mini() {
     git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/filesystem.git &&
     git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/locale.git &&
     git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/regex.git &&
+    git clone --depth=1 https://github.com/boostorg/dll.git &&
     popd
 }
 
@@ -72,6 +73,7 @@ build_boost_mini() {
     cp -r locale/include/* "$INC_PATH" &&
     cp -r regex/include/* "$INC_PATH" &&
     cp -r system/include/* "$INC_PATH" &&
+    cp -r dll/include/* "$INC_PATH" &&
     popd
 }
 
