@@ -32,13 +32,13 @@ fetch_librime() {
     cd librime &&
     patch -p1 < "$H/patches/librime/relocatable-plugins.patch" &&
     cd thirdparty/src &&
-        git clone https://github.com/capnproto/capnproto capnproto &&
-        git clone https://github.com/google/snappy.git snappy &&
-        git clone https://github.com/google/glog.git glog &&
-        git clone https://github.com/google/leveldb.git leveldb &&
-        git clone https://github.com/s-yata/marisa-trie.git marisa-trie &&
+        git clone https://github.com/capnproto/capnproto -b v0.8.0 capnproto &&
+        git clone https://github.com/google/snappy.git -b 1.1.9 snappy &&
+        git clone https://github.com/google/glog.git -b v0.5.0  glog &&
+        git clone https://github.com/google/leveldb.git -b 1.23 leveldb &&
+        git clone https://github.com/s-yata/marisa-trie.git -b v0.2.6 marisa-trie &&
         git clone https://github.com/BYVoid/OpenCC.git opencc &&
-        git clone https://github.com/jbeder/yaml-cpp.git yaml-cpp &&
+        git clone https://github.com/jbeder/yaml-cpp.git -b yaml-cpp-0.7.0 yaml-cpp &&
     cd opencc &&
     patch -p1 < "$H/patches/opencc/0001-relocatable-opencc.patch" &&
     cd .. &&
