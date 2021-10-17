@@ -202,7 +202,7 @@ set -x
 
 git tag -d continuous
 
-wget "https://github.com/AppImage/AppImageKit/releases/download/12/appimagetool-x86_64.AppImage" &&
+wget "https://github.com/hchunhui/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage" &&
 chmod +x appimagetool-x86_64.AppImage &&
 fetch_build_patchelf &&
 fetch_boost_mini &&
