@@ -13,7 +13,7 @@ index 0f3f27e..2d71c0e 100755
 --- a/rime-install
 +++ b/rime-install
 @@ -1,4 +1,5 @@
- #!/bin/bash
+ #!/usr/bin/env bash
 +plum_dir="$APPDIR/usr/plum"
  
  if [[ -z "${plum_repo}" ]]; then
