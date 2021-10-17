@@ -176,7 +176,7 @@ bundle() {
     cp version AppDir/usr/bin &&
     gcc -O2 -o AppDir/usr/lib/exec0 tools/exec0.c &&
 
-    ./appimagetool-x86_64.AppImage AppDir
+    ./appimagetool-x86_64.AppImage --comp zstd AppDir
 }
 
 fetch_build_patchelf() {
