@@ -142,7 +142,7 @@ bundle() {
     patch_exe librime/build/bin rime_dict_manager &&
     patch_exe librime/build/bin rime_patch &&
     patch_lib librime/build/lib librime.so.1 &&
-    patch_lib librime/build/lib libglog.so.0 &&
+    patch_lib librime/thirdparty/lib libglog.so.0 &&
     patch_plugin librime/build/lib librime-lua.so &&
     patch_plugin librime/build/lib librime-octagram.so &&
     patch_plugin librime/build/lib librime-charcode.so &&
