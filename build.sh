@@ -20,8 +20,8 @@ fetch_boost_mini() {
 fetch_plugin() {
     ./install-plugins.sh "$1/librime-$2" &&
     cd "plugins/$2" &&
-    if [ -e "travis-install.sh" ]; then
-        bash ./travis-install.sh
+    if [ -e "action-install.sh" ]; then
+        bash ./action-install.sh
     fi &&
     cd ../..
 }
