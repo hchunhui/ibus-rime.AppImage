@@ -1,13 +1,13 @@
 # a minimal build of third party libraries for static linking
 
-THIRD_PARTY_DIR = $(CURDIR)/thirdparty
-SRC_DIR = $(THIRD_PARTY_DIR)/src
+THIRD_PARTY_DIR = $(CURDIR)
+SRC_DIR = $(THIRD_PARTY_DIR)/deps
 INCLUDE_DIR = $(THIRD_PARTY_DIR)/include
 LIB_DIR = $(THIRD_PARTY_DIR)/lib
 BIN_DIR = $(THIRD_PARTY_DIR)/bin
 SHARE_DIR = $(THIRD_PARTY_DIR)/share
 
-THIRD_PARTY_LIBS = capnproto snappy glog leveldb marisa opencc yaml-cpp
+THIRD_PARTY_LIBS = snappy glog leveldb marisa opencc yaml-cpp
 
 .PHONY: all clean-src $(THIRD_PARTY_LIBS)
 

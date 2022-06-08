@@ -2,8 +2,8 @@
 
 J=1
 H="$PWD"
-INC_PATH="$H/librime/thirdparty/include"
-LIB_PATH="$H/librime/thirdparty/lib"
+INC_PATH="$H/librime/include"
+LIB_PATH="$H/librime/lib"
 BOOST_VERSION="1.58.0"
 
 fetch_boost_mini() {
@@ -31,8 +31,7 @@ fetch_librime() {
     git clone --shallow-exclude='1.6.0' https://github.com/rime/librime.git &&
     cd librime &&
     patch -p1 < "$H/patches/librime/relocatable-plugins.patch" &&
-    cd thirdparty/src &&
-        git clone https://github.com/capnproto/capnproto -b v0.8.0 capnproto &&
+    cd deps &&
         git clone https://github.com/google/snappy.git -b 1.1.9 snappy &&
         git clone https://github.com/google/glog.git -b v0.5.0  glog &&
         git clone https://github.com/google/leveldb.git -b 1.23 leveldb &&
@@ -45,7 +44,7 @@ fetch_librime() {
     cd snappy &&
     patch -p1 < "$H/patches/snappy/add-static.patch" &&
     cd .. &&
-    cd ../.. &&
+    cd .. &&
     fetch_plugin rime charcode &&
     fetch_plugin lotem octagram &&
     fetch_plugin hchunhui lua &&
@@ -142,21 +141,21 @@ bundle() {
     patch_exe librime/build/bin rime_dict_manager &&
     patch_exe librime/build/bin rime_patch &&
     patch_lib librime/build/lib librime.so.1 &&
-    patch_lib librime/thirdparty/lib libglog.so.0 &&
+    patch_lib librime/lib libglog.so.0 &&
     patch_plugin librime/build/lib librime-lua.so &&
     patch_plugin librime/build/lib librime-octagram.so &&
     patch_plugin librime/build/lib librime-charcode.so &&
-    patch_lib librime/thirdparty/lib libopencc.so.1.1 &&
-    patch_exe librime/thirdparty/bin opencc &&
-    patch_exe librime/thirdparty/bin opencc_dict &&
-    patch_exe librime/thirdparty/bin opencc_phrase_extract &&
+    patch_lib librime/lib libopencc.so.1.1 &&
+    patch_exe librime/bin opencc &&
+    patch_exe librime/bin opencc_dict &&
+    patch_exe librime/bin opencc_phrase_extract &&
     patch_lib "/usr/lib/$(gcc -print-multiarch)" libnotify.so.4 &&
     patch_exe librime/build/plugins/octagram/bin build_grammar &&
 
     mkdir -p AppDir/usr/share/ibus-rime &&
     cp -r ibus-rime/icons AppDir/usr/share/ibus-rime/ &&
     mv plum/output AppDir/usr/share/rime-data &&
-    cp -r librime/thirdparty/share/opencc AppDir/usr/share/rime-data/ &&
+    cp -r librime/share/opencc AppDir/usr/share/rime-data/ &&
 
     mkdir -p AppDir/usr/plum &&
     cd plum && (git archive master | tar -xv -C ../AppDir/usr/plum) && cd .. &&
