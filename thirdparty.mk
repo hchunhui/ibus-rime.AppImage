@@ -28,7 +28,7 @@ capnproto:
 	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
 	-DBUILD_TESTING:BOOL=OFF \
-	-DCMAKE_BUILD_TYPE:STRING="Release" \
+	-DCMAKE_BUILD_TYPE:STRING="MinSizeRel" \
 	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
 	&& cmake --build build --target install
 
@@ -39,7 +39,7 @@ snappy:
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
 	-DSNAPPY_BUILD_TESTS:BOOL=OFF \
 	-DSNAPPY_BUILD_BENCHMARKS:BOOL=OFF \
-	-DCMAKE_BUILD_TYPE:STRING="Release" \
+	-DCMAKE_BUILD_TYPE:STRING="MinSizeRel" \
 	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
 	&& cmake --build cmake-build --target install
 
@@ -51,7 +51,7 @@ glog:
 	-DBUILD_TESTING:BOOL=OFF \
 	-DWITH_GFLAGS:BOOL=OFF \
 	-DWITH_UNWIND:BOOL=OFF \
-	-DCMAKE_BUILD_TYPE:STRING="Release" \
+	-DCMAKE_BUILD_TYPE:STRING="MinSizeRel" \
 	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
 	&& cmake --build cmake-build --target install
 
@@ -62,7 +62,7 @@ leveldb:
 	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
 	-DLEVELDB_BUILD_BENCHMARKS:BOOL=OFF \
 	-DLEVELDB_BUILD_TESTS:BOOL=OFF \
-	-DCMAKE_BUILD_TYPE:STRING="Release" \
+	-DCMAKE_BUILD_TYPE:STRING="MinSizeRel" \
 	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
 	&& cmake --build build --target install
 
@@ -70,14 +70,14 @@ marisa:
 	cd $(SRC_DIR)/marisa-trie; \
 	cmake $(SRC_DIR) -Bbuild \
 	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
-	-DCMAKE_BUILD_TYPE:STRING="Release" \
+	-DCMAKE_BUILD_TYPE:STRING="MinSizeRel" \
 	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
 	&& cmake --build build --target install
 
 opencc:
 	cd $(SRC_DIR)/opencc; \
 	cmake . -Bbuild \
-	-DCMAKE_BUILD_TYPE:STRING="Release" \
+	-DCMAKE_BUILD_TYPE:STRING="MinSizeRel" \
 	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
 	&& cmake --build build --target install
 
@@ -88,7 +88,7 @@ yaml-cpp:
 	-DYAML_CPP_BUILD_CONTRIB:BOOL=OFF \
 	-DYAML_CPP_BUILD_TESTS:BOOL=OFF \
 	-DYAML_CPP_BUILD_TOOLS:BOOL=OFF \
-	-DCMAKE_BUILD_TYPE:STRING="Release" \
+	-DCMAKE_BUILD_TYPE:STRING="MinSizeRel" \
 	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
 	&& cmake --build build --target install
 
@@ -97,6 +97,6 @@ gtest:
 	cmake . -Bbuild \
 	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
 	-DBUILD_GMOCK:BOOL=OFF \
-	-DCMAKE_BUILD_TYPE:STRING="Release" \
+	-DCMAKE_BUILD_TYPE:STRING="MinSizeRel" \
 	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \
 	&& cmake --build build --target install

@@ -65,7 +65,7 @@ build_boost_mini() {
     cd boost &&
     rm -rf build &&
     mkdir build &&
-    cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make -j"$J" &&
+    cd build && cmake -DCMAKE_BUILD_TYPE=MinSizeRel .. && make -j"$J" &&
     cp *.a "$LIB_PATH" &&
     cd .. &&
     cp -r filesystem/include/* "$INC_PATH" &&
@@ -86,7 +86,7 @@ build_librime() {
     cd librime &&
     cmake . -Bbuild \
         -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DBUILD_TEST=OFF \
         -DBUILD_WITH_ICU=OFF \
         -DBUILD_MERGED_PLUGINS=OFF \
