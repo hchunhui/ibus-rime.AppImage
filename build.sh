@@ -107,7 +107,8 @@ fetch_plum() {
     pushd . &&
     git clone --depth=1 https://github.com/rime/plum.git &&
     cd plum &&
-    make &&
+    make && mv output output-preset &&
+    make minimal && mv output output-minimal &&
     popd
 }
 
@@ -154,8 +155,6 @@ bundle() {
 
     mkdir -p AppDir/usr/share/ibus-rime &&
     cp -r ibus-rime/icons AppDir/usr/share/ibus-rime/ &&
-    mv plum/output AppDir/usr/share/rime-data &&
-    cp -r librime/share/opencc AppDir/usr/share/rime-data/ &&
 
     mkdir -p AppDir/usr/plum &&
     cd plum && (git archive master | tar -xv -C ../AppDir/usr/plum) && cd .. &&
@@ -174,9 +173,21 @@ bundle() {
     echo 'EOF' >> version &&
     chmod +x version &&
     cp version AppDir/usr/bin &&
-    gcc -O2 -o AppDir/usr/lib/exec0 tools/exec0.c &&
+    gcc -O2 -o AppDir/usr/lib/exec0 tools/exec0.c
+}
 
+bundle_preset() {
+    rm -rf AppDir/usr/share/rime-data &&
+    cp -r plum/output-preset AppDir/usr/share/rime-data &&
+    cp -r librime/share/opencc AppDir/usr/share/rime-data/ &&
     ./appimagetool-x86_64.AppImage --comp zstd AppDir
+}
+
+bundle_minimal() {
+    rm -rf AppDir/usr/share/rime-data &&
+    cp -r plum/output-minimal AppDir/usr/share/rime-data &&
+    cp -r librime/share/opencc AppDir/usr/share/rime-data/ &&
+    ./appimagetool-x86_64.AppImage --comp zstd AppDir ibus-rime-`uname -m`.minimal.AppImage
 }
 
 fetch_build_patchelf() {
@@ -186,7 +197,7 @@ fetch_build_patchelf() {
 }
 
 check() {
-    file=ibus-rime-x86_64.AppImage
+    for file in ibus-rime*.AppImage; do
     md5sum=$(md5sum "$file" | cut -d' ' -f1)
     sha1sum=$(sha1sum "$file" | cut -d' ' -f1)
     sha256sum=$(sha256sum "$file" | cut -d' ' -f1)
@@ -196,6 +207,7 @@ check() {
     echo "MD5 checksum: $md5sum"
     echo "SHA1 checksum: $sha1sum"
     echo "SHA256 checksum: $sha256sum"
+    done
 }
 
 set -x
@@ -218,6 +230,8 @@ build_ibus_rime &&
 fetch_plum &&
 
 bundle &&
+bundle_preset &&
+bundle_minimal &&
 
 set +x &&
 check

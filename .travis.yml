@@ -11,7 +11,7 @@ script:
 - "./build.sh"
 
 after_success:
- - bash upload.sh ibus-rime-x86_64.AppImage
+ - bash upload.sh ibus-rime*.AppImage
 
 branches:
   except:
