@@ -1,0 +1,31 @@
+name: build
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: build docker image
+      run: docker build -t build .
+
+    - name: fetch
+      run: ./build.sh fetch
+
+    - name: build in docker image
+      run: docker run -v .:/work --rm build bash -c "cd /work; ./build.sh build"
+
+    - name: bundle
+      run: ./build.sh bundle
+
+    - name: Upload artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: my-artifact
+          path: ibus-rime*.AppImage
