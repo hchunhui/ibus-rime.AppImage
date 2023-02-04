@@ -25,7 +25,7 @@ jobs:
       run: ./build.sh bundle
 
     - name: Upload artifact
-        uses: actions/upload-artifact@v1.0.0
-        with:
-          name: my-artifact
-          path: ibus-rime*.AppImage
+      uses: actions/upload-artifact@v3
+      with:
+        name: my-artifact
+        path: ibus-rime*.AppImage
