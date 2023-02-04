@@ -36,3 +36,8 @@ jobs:
       with:
         name: my-artifact
         path: ibus-rime*.AppImage
+
+    - name: release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: bash upload.sh ibus-rime*.AppImage
