@@ -162,7 +162,7 @@ bundle() {
     cd AppDir/usr/bin && ln -s ../plum/rime-install rime-install && cd ../../.. &&
 
     echo -e -n '#!/bin/sh\ncat << '"'EOF'"'\nPackaged by ' > version &&
-    ./appimagetool-x86_64.AppImage --version 2>> version &&
+    cat appimagetool-version >> version &&
     if [ -n "${TRAVIS_BUILD_WEB_URL}" ]; then
         echo "Travis CI build log: ${TRAVIS_BUILD_WEB_URL}" >> version
     fi &&
@@ -216,6 +216,7 @@ check() {
 fetch() {
     wget "https://github.com/hchunhui/AppImageKit/releases/download/zstd-only/appimagetool-x86_64.AppImage" &&
     chmod +x appimagetool-x86_64.AppImage &&
+    ./appimagetool-x86_64.AppImage --version 2> appimagetool-version &&
     fetch_patchelf &&
     fetch_boost_mini &&
     fetch_librime &&
