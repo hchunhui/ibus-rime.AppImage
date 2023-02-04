@@ -165,6 +165,8 @@ bundle() {
     cat appimagetool-version >> version &&
     if [ -n "${TRAVIS_BUILD_WEB_URL}" ]; then
         echo "Travis CI build log: ${TRAVIS_BUILD_WEB_URL}" >> version
+    elif [ -n "${GITHUB_SERVER_URL}" ]; then
+	echo "GitHub Actions build log: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> version
     fi &&
     echo '---' >> version &&
     (echo Source Version From && (find ./* .git -path '*.git' -exec ./describe '{}' \; | LC_ALL=C sort)) | column -t >> version &&
@@ -216,8 +218,7 @@ check() {
 fetch() {
     wget "https://github.com/hchunhui/AppImageKit/releases/download/zstd-only/appimagetool-x86_64.AppImage" &&
     chmod +x appimagetool-x86_64.AppImage &&
-    ./appimagetool-x86_64.AppImage --version 2> appimagetool-version
-
+    ./appimagetool-x86_64.AppImage --version 2> appimagetool-version &&
     fetch_patchelf &&
     fetch_boost_mini &&
     fetch_librime &&
