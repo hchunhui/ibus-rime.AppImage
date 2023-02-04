@@ -22,7 +22,9 @@ jobs:
       run: docker run -v $PWD:/work --rm build bash -c "cd /work; ./build.sh build"
 
     - name: bundle
-      run: ./build.sh bundle
+      run: |
+        sudo chown -R $USER AppDir
+        ./build.sh bundle
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
