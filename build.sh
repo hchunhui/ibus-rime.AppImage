@@ -228,11 +228,11 @@ build() {
     build_boost_mini &&
     build_thirdparty &&
     build_librime &&
-    build_ibus_rime
+    build_ibus_rime &&
+    bundle
 }
 
 bundle_all() {
-    bundle &&
     bundle_preset &&
     bundle_minimal
 }
