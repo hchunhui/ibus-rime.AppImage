@@ -19,7 +19,7 @@ jobs:
       run: ./build.sh fetch
 
     - name: build in docker image
-      run: docker run -v .:/work --rm build bash -c "cd /work; ./build.sh build"
+      run: docker run -v $PWD:/work --rm build bash -c "cd /work; ./build.sh build"
 
     - name: bundle
       run: ./build.sh bundle
