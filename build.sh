@@ -66,7 +66,7 @@ build_boost_mini() {
     rm -rf build &&
     mkdir build &&
     cd build && cmake -DCMAKE_BUILD_TYPE=MinSizeRel .. && make -j"$J" &&
-    cp *.a "$LIB_PATH" &&
+    cp ./*.a "$LIB_PATH" &&
     cd .. &&
     cp -r filesystem/include/* "$INC_PATH" &&
     cp -r locale/include/* "$INC_PATH" &&
@@ -167,7 +167,7 @@ bundle() {
         echo "Travis CI build log: ${TRAVIS_BUILD_WEB_URL}" >> version
     fi &&
     echo '---' >> version &&
-    (echo Source Version From && (find * .git -path '*.git' -exec ./describe '{}' \; | LC_ALL=C sort)) | column -t >> version &&
+    (echo Source Version From && (find ./* .git -path '*.git' -exec ./describe '{}' \; | LC_ALL=C sort)) | column -t >> version &&
     echo '---' >> version &&
     (echo Binary From && (apt-get download --print-uris libnotify4 libnotify-bin | tr -d "'" | awk '{print $2" "$1}')) | column -t >> version &&
     echo 'EOF' >> version &&
@@ -187,13 +187,16 @@ bundle_minimal() {
     rm -rf AppDir/usr/share/rime-data &&
     cp -r plum/output-minimal AppDir/usr/share/rime-data &&
     cp -r librime/share/opencc AppDir/usr/share/rime-data/ &&
-    ./appimagetool-x86_64.AppImage --comp zstd AppDir ibus-rime-`uname -m`.minimal.AppImage
+    ./appimagetool-x86_64.AppImage --comp zstd AppDir ibus-rime-"$(uname -m)".minimal.AppImage
 }
 
-fetch_build_patchelf() {
+fetch_patchelf() {
     git clone -b '0.10' --depth=1 https://github.com/NixOS/patchelf.git patchelf-src &&
-    cd patchelf-src && patch -p1 < ../patches/patchelf/adjust_startPage_issue127_commit1cc234fea.patch && cd .. &&
-    g++ patchelf-src/src/patchelf.cc -Wall -std=c++11 -D_FILE_OFFSET_BITS=64 -DPACKAGE_STRING='""' -DPAGESIZE=`getconf PAGESIZE` -o patchelf
+    cd patchelf-src && patch -p1 < ../patches/patchelf/adjust_startPage_issue127_commit1cc234fea.patch && cd ..
+}
+
+build_patchelf() {
+    g++ patchelf-src/src/patchelf.cc -Wall -std=c++11 -D_FILE_OFFSET_BITS=64 -DPACKAGE_STRING='""' -DPAGESIZE="$(getconf PAGESIZE)" -o patchelf
 }
 
 check() {
@@ -210,28 +213,47 @@ check() {
     done
 }
 
-set -x
+fetch() {
+    wget "https://github.com/hchunhui/AppImageKit/releases/download/zstd-only/appimagetool-x86_64.AppImage" &&
+    chmod +x appimagetool-x86_64.AppImage &&
+    fetch_patchelf &&
+    fetch_boost_mini &&
+    fetch_librime &&
+    fetch_ibus_rime &&
+    fetch_plum
+}
 
+build() {
+    build_patchelf &&
+    build_boost_mini &&
+    build_thirdparty &&
+    build_librime &&
+    build_ibus_rime
+}
+
+bundle_all() {
+    bundle &&
+    bundle_preset &&
+    bundle_minimal
+}
+
+set -x
 git tag -d continuous
 
-wget "https://github.com/hchunhui/AppImageKit/releases/download/zstd-only/appimagetool-x86_64.AppImage" &&
-chmod +x appimagetool-x86_64.AppImage &&
-fetch_build_patchelf &&
-fetch_boost_mini &&
-fetch_librime &&
-
-build_boost_mini &&
-build_thirdparty &&
-build_librime &&
-
-fetch_ibus_rime &&
-build_ibus_rime &&
-
-fetch_plum &&
-
-bundle &&
-bundle_preset &&
-bundle_minimal &&
-
-set +x &&
-check
+if [ "$#" -eq 0 ]; then
+    fetch &&
+    build &&
+    bundle_all &&
+    set +x &&
+    check
+else
+    if [ "$1" == "fetch" ]; then
+	fetch
+    elif [ "$1" == "build" ]; then
+	build
+    elif [ "$1" == "bundle" ]; then
+	bundle_all &&
+	set +x &&
+	check
+    fi
+fi
