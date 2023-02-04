@@ -15,7 +15,7 @@ jobs:
     - name: apt get
       run: |
         sudo apt-get update -qq
-	sudo apt-get install -qq libfuse2
+        sudo apt-get install -qq libfuse2
 
     - name: build docker image
       run: docker build -t build .
