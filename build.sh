@@ -212,7 +212,7 @@ check() {
 }
 
 fetch() {
-    wget "https://github.com/hchunhui/AppImageKit/releases/download/zstd-only/appimagetool-x86_64.AppImage" &&
+    wget "https://github.com/hchunhui/AppImageKit/releases/download/builtin-libfuse/appimagetool-x86_64.AppImage" &&
     chmod +x appimagetool-x86_64.AppImage &&
     ./appimagetool-x86_64.AppImage --version 2> appimagetool-version &&
     touch ci-version &&

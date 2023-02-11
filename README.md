@@ -4,11 +4,11 @@
 
 ## 特性
   - 打包最新版本的中州韵输入法，支持 Lua 插件和语言模型插件；
-  - 一键安装，免编译代码，免使用管理员权限，免安装依赖。
-  - 支持各种 Linux 发行版；
+  - 一键安装，免编译代码，免使用管理员权限，免安装依赖；
+  - 支持各种 Linux 发行版。
 
 ## 系统要求
-  - kernel with FUSE module
+  - fuse2/3
   - glibc >= 2.23
   - ibus 1.5
 
@@ -83,4 +83,3 @@
   - [librime-octagram](https://github.com/lotem/librime-octagram)
   - [librime-lua](https://github.com/hchunhui/librime-lua)
   - [AppImageKit](https://github.com/AppImage/AppImageKit)
-  - [linuxdeploy](https://github.com/linuxdeploy/linuxdeploy)
