@@ -13,7 +13,7 @@ fetch_boost_mini() {
     git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/filesystem.git &&
     git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/locale.git &&
     git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/regex.git &&
-    git clone --depth=1 https://github.com/boostorg/dll.git &&
+    git clone -b "boost-1.82.0" --depth=1 https://github.com/boostorg/dll.git &&
     popd
 }
 
