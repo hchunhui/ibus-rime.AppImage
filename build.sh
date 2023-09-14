@@ -28,21 +28,18 @@ fetch_plugin() {
 
 fetch_librime() {
     pushd . &&
-    git clone --shallow-exclude='1.6.0' https://github.com/rime/librime.git &&
+    git clone --shallow-exclude='1.8.0' https://github.com/rime/librime.git &&
     cd librime &&
     patch -p1 < "$H/patches/librime/relocatable-plugins.patch" &&
     cd deps &&
-        git clone https://github.com/google/snappy.git -b 1.1.9 snappy &&
-        git clone https://github.com/google/glog.git -b v0.5.0  glog &&
+        git clone https://github.com/google/snappy.git -b 1.1.10 snappy &&
+        git clone https://github.com/google/glog.git -b v0.6.0  glog &&
         git clone https://github.com/google/leveldb.git -b 1.23 leveldb &&
         git clone https://github.com/s-yata/marisa-trie.git -b v0.2.6 marisa-trie &&
         git clone https://github.com/BYVoid/OpenCC.git opencc &&
-        git clone https://github.com/jbeder/yaml-cpp.git -b yaml-cpp-0.7.0 yaml-cpp &&
+        git clone https://github.com/jbeder/yaml-cpp.git -b 0.8.0 yaml-cpp &&
     cd opencc &&
     patch -p1 < "$H/patches/opencc/0001-relocatable-opencc.patch" &&
-    cd .. &&
-    cd snappy &&
-    patch -p1 < "$H/patches/snappy/add-static.patch" &&
     cd .. &&
     cd .. &&
     fetch_plugin rime charcode &&
@@ -142,7 +139,7 @@ bundle() {
     patch_exe librime/build/bin rime_dict_manager &&
     patch_exe librime/build/bin rime_patch &&
     patch_lib librime/build/lib librime.so.1 &&
-    patch_lib librime/lib libglog.so.0 &&
+    patch_lib librime/lib libglog.so.1 &&
     patch_plugin librime/build/lib librime-lua.so &&
     patch_plugin librime/build/lib librime-octagram.so &&
     patch_plugin librime/build/lib librime-charcode.so &&
