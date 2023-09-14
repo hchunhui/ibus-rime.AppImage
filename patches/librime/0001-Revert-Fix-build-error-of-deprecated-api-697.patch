@@ -1,0 +1,54 @@
+From d12cf0a20e06be2ed6e0b7298f337827e1dc0c6c Mon Sep 17 00:00:00 2001
+From: Chunhui He <hchunhui@mail.ustc.edu.cn>
+Date: Thu, 14 Sep 2023 14:18:45 +0000
+Subject: [PATCH] Revert "Fix build error of deprecated api (#697)"
+
+This reverts commit 402137c647f3cd229ccf0f716e63a59c441fc6fa.
+---
+ CMakeLists.txt                     | 2 +-
+ src/rime/lever/customizer.cc       | 2 +-
+ src/rime/lever/deployment_tasks.cc | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 12311a8..8429537 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -66,7 +66,7 @@ else()
+   set(BOOST_COMPONENTS ${BOOST_COMPONENTS} signals)
+ endif()
+ 
+-find_package(Boost 1.74.0 REQUIRED COMPONENTS ${BOOST_COMPONENTS})
++find_package(Boost 1.46.0 REQUIRED COMPONENTS ${BOOST_COMPONENTS})
+ if(Boost_FOUND)
+   include_directories(${Boost_INCLUDE_DIRS})
+   link_directories(${Boost_LIBRARY_DIRS})
+diff --git a/src/rime/lever/customizer.cc b/src/rime/lever/customizer.cc
+index 6b5ce23..e5021e8 100644
+--- a/src/rime/lever/customizer.cc
++++ b/src/rime/lever/customizer.cc
+@@ -89,7 +89,7 @@ bool Customizer::UpdateConfigFile() {
+   if (redistribute || (is_dirty && !missing_original_copy)) {
+     try {
+       fs::copy_file(source_path_, dest_path_,
+-                    fs::copy_options::overwrite_existing);
++                    fs::copy_option::overwrite_if_exists);
+     } catch (...) {
+       LOG(ERROR) << "Error copying config file '" << source_path_.string()
+                  << "' to user directory.";
+diff --git a/src/rime/lever/deployment_tasks.cc b/src/rime/lever/deployment_tasks.cc
+index fb26fa5..b94a2a1 100644
+--- a/src/rime/lever/deployment_tasks.cc
++++ b/src/rime/lever/deployment_tasks.cc
+@@ -562,7 +562,7 @@ bool BackupConfigFiles::Run(Deployer* deployer) {
+       continue;
+     }
+     boost::system::error_code ec;
+-    fs::copy_file(entry, backup, fs::copy_options::overwrite_existing, ec);
++    fs::copy_file(entry, backup, fs::copy_option::overwrite_if_exists, ec);
+     if (ec) {
+       LOG(ERROR) << "error backing up file " << backup.string();
+       ++failure;
+-- 
+2.39.2
+

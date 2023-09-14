@@ -31,6 +31,7 @@ fetch_librime() {
     git clone --shallow-exclude='1.8.0' https://github.com/rime/librime.git &&
     cd librime &&
     patch -p1 < "$H/patches/librime/relocatable-plugins.patch" &&
+    patch -p1 < "$H/patches/librime/0001-Revert-Fix-build-error-of-deprecated-api-697.patch" &&
     cd deps &&
         git clone https://github.com/google/snappy.git -b 1.1.10 snappy &&
         git clone https://github.com/google/glog.git -b v0.6.0  glog &&
