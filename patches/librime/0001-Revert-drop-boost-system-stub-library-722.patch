@@ -1,0 +1,101 @@
+From bafbef93dcfe26f4bfafcf31dd47f5ca783ca14b Mon Sep 17 00:00:00 2001
+From: Chunhui He <hchunhui@mail.ustc.edu.cn>
+Date: Mon, 2 Oct 2023 06:02:40 +0000
+Subject: [PATCH 1/2] Revert "drop boost/system stub library (#722)"
+
+This reverts commit 619a67b3b79660a4c5c6ba265ddf807562132fc6.
+---
+ .dockerignore           | 1 -
+ CMakeLists.txt          | 2 +-
+ Dockerfile              | 1 +
+ action-install-linux.sh | 1 +
+ build-clang.bat         | 1 +
+ build.bat               | 1 +
+ install-boost.sh        | 2 +-
+ 7 files changed, 6 insertions(+), 3 deletions(-)
+ delete mode 100644 .dockerignore
+
+diff --git a/.dockerignore b/.dockerignore
+deleted file mode 100644
+index 378eac2..0000000
+--- a/.dockerignore
++++ /dev/null
+@@ -1 +0,0 @@
+-build
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 03484ec..e37430b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -59,7 +59,7 @@ if(MSVC)
+   set(Boost_USE_STATIC_RUNTIME ON)
+ endif()
+ 
+-set(BOOST_COMPONENTS filesystem regex)
++set(BOOST_COMPONENTS filesystem regex system)
+ 
+ if(BOOST_USE_SIGNALS2)
+   set(RIME_BOOST_SIGNALS2 1)
+diff --git a/Dockerfile b/Dockerfile
+index 3c73a4d..649617f 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -8,6 +8,7 @@ RUN apt update && apt install -y \
+   libboost-dev \
+   libboost-filesystem-dev \
+   libboost-regex-dev \
++  libboost-system-dev \
+   libboost-locale-dev \
+   libgoogle-glog-dev \
+   libgtest-dev \
+diff --git a/action-install-linux.sh b/action-install-linux.sh
+index 701c63f..9e0dcb1 100755
+--- a/action-install-linux.sh
++++ b/action-install-linux.sh
+@@ -5,6 +5,7 @@ dep_packages=(
+     libboost-filesystem-dev
+     libboost-locale-dev
+     libboost-regex-dev
++    libboost-system-dev
+     libgoogle-glog-dev
+     libleveldb-dev
+     libmarisa-dev
+diff --git a/build-clang.bat b/build-clang.bat
+index 8dd4386..c54df0b 100644
+--- a/build-clang.bat
++++ b/build-clang.bat
+@@ -59,6 +59,7 @@ if %build_boost% == 1 (
+     stage^
+     --with-locale^
+     --with-filesystem^
++    --with-system^
+     --with-regex || exit
+   popd
+ )
+diff --git a/build.bat b/build.bat
+index 2382495..53e3c16 100644
+--- a/build.bat
++++ b/build.bat
+@@ -120,6 +120,7 @@ set boost_compiled_libs=--with-date_time^
+  --with-filesystem^
+  --with-locale^
+  --with-regex^
++ --with-system^
+  --with-thread
+ 
+ rem the number actually means platform toolset, not %VisualStudioVersion%
+diff --git a/install-boost.sh b/install-boost.sh
+index c659efe..f07e95a 100755
+--- a/install-boost.sh
++++ b/install-boost.sh
+@@ -23,7 +23,7 @@ download_boost_source() {
+     [[ -f "${BOOST_ROOT}/bootstrap.sh" ]]
+ }
+ 
+-boost_libs="${boost_libs=filesystem,regex}"
++boost_libs="${boost_libs=filesystem,regex,system}"
+ boost_cxxflags='-arch arm64 -arch x86_64'
+ 
+ build_boost_macos() {
+-- 
+2.39.2
+

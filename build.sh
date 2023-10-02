@@ -32,6 +32,8 @@ fetch_librime() {
     cd librime &&
     patch -p1 < "$H/patches/librime/relocatable-plugins.patch" &&
     patch -p1 < "$H/patches/librime/0001-Revert-Fix-build-error-of-deprecated-api-697.patch" &&
+    patch -p1 < "$H/patches/librime/0001-Revert-drop-boost-system-stub-library-722.patch" &&
+    patch -p1 < "$H/patches/librime/0002-Revert-vendor-marisa-717.patch" &&
     cd deps &&
         git clone https://github.com/google/snappy.git -b 1.1.10 snappy &&
         git clone https://github.com/google/glog.git -b v0.6.0  glog &&
