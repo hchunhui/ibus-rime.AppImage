@@ -9,8 +9,6 @@ BOOST_VERSION="1.58.0"
 fetch_boost_mini() {
     pushd . &&
     cd boost &&
-    git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/system.git &&
-    git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/filesystem.git &&
     git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/locale.git &&
     git clone -b "boost-$BOOST_VERSION" --depth=1 https://github.com/boostorg/regex.git &&
     git clone -b "boost-1.82.0" --depth=1 https://github.com/boostorg/dll.git &&
@@ -31,9 +29,9 @@ fetch_librime() {
     git clone --shallow-exclude='1.8.0' https://github.com/rime/librime.git &&
     cd librime &&
     patch -p1 < "$H/patches/librime/relocatable-plugins.patch" &&
-    patch -p1 < "$H/patches/librime/0001-Revert-Fix-build-error-of-deprecated-api-697.patch" &&
-    patch -p1 < "$H/patches/librime/0001-Revert-drop-boost-system-stub-library-722.patch" &&
     patch -p1 < "$H/patches/librime/0002-Revert-vendor-marisa-717.patch" &&
+    cp "$H/patches/librime/cpp11.h" include/utf8/ &&
+
     cd deps &&
         git clone https://github.com/google/snappy.git -b 1.1.10 snappy &&
         git clone https://github.com/google/glog.git -b v0.6.0  glog &&
@@ -48,6 +46,8 @@ fetch_librime() {
     fetch_plugin rime charcode &&
     fetch_plugin lotem octagram &&
     fetch_plugin hchunhui lua &&
+    patch -p1 < "$H/patches/librime/charcode-drop-boost-asio.patch" &&
+    patch -p1 < "$H/patches/librime/lua-use-std-filesystem.patch" &&
     popd
 }
 
@@ -68,11 +68,10 @@ build_boost_mini() {
     cd build && cmake -DCMAKE_BUILD_TYPE=MinSizeRel .. && make -j"$J" &&
     cp ./*.a "$LIB_PATH" &&
     cd .. &&
-    cp -r filesystem/include/* "$INC_PATH" &&
     cp -r locale/include/* "$INC_PATH" &&
     cp -r regex/include/* "$INC_PATH" &&
-    cp -r system/include/* "$INC_PATH" &&
     cp -r dll/include/* "$INC_PATH" &&
+    cp -r ../std/* "$INC_PATH" &&
     popd
 }
 

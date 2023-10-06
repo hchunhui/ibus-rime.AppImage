@@ -18,7 +18,7 @@ index 7a567be..44c60a9 100644
 -  rime::PluginManager::instance().LoadPlugins(RIME_PLUGINS_DIR);
 +  auto appdir = getenv("APPDIR");
 +  if (appdir)
-+    rime::PluginManager::instance().LoadPlugins(fs::path(appdir) / RIME_PLUGINS_DIR);
++    rime::PluginManager::instance().LoadPlugins(std::string(appdir) + RIME_PLUGINS_DIR);
  }
  
  static void rime_plugins_finalize() {}

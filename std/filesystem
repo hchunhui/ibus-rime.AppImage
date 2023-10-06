@@ -1,0 +1,6 @@
+#include <ghc/filesystem>
+namespace std {
+namespace filesystem {
+using namespace ghc::filesystem;
+}
+}

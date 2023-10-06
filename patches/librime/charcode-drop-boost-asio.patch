@@ -1,0 +1,11 @@
+--- a/plugins/charcode/src/codepoint_translator.cc
++++ b/plugins/charcode/src/codepoint_translator.cc
+@@ -5,7 +5,7 @@
+ // 2016-09-08 osfans <waxaca@163.com>
+ //
+ 
+-#include <boost/asio.hpp>
++#include <arpa/inet.h>
+ #include <boost/algorithm/string.hpp>
+ #include <boost/locale.hpp>
+ 

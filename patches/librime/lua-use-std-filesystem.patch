@@ -1,0 +1,11 @@
+--- a/plugins/lua/src/opencc.cc
++++ b/plugins/lua/src/opencc.cc
+@@ -16,7 +16,7 @@
+ #include <rime/common.h>
+ #include <rime_api.h>
+ 
+-#if __cplusplus >= 201703L || _MSVC_LANG >= 201703L
++#if 1
+   #include <filesystem>
+   namespace ns = std::filesystem;
+ #else
