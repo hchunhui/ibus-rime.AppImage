@@ -47,7 +47,6 @@ fetch_librime() {
     fetch_plugin lotem octagram &&
     fetch_plugin hchunhui lua &&
     patch -p1 < "$H/patches/librime/charcode-drop-boost-asio.patch" &&
-    patch -p1 < "$H/patches/librime/lua-use-std-filesystem.patch" &&
     popd
 }
 
