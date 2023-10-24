@@ -1,0 +1,6 @@
+#include <experimental/any>
+namespace std {
+using std::experimental::any;
+using std::experimental::any_cast;
+using std::experimental::bad_any_cast;
+}

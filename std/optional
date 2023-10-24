@@ -1,0 +1,6 @@
+#include <experimental/optional>
+namespace std {
+using std::experimental::optional;
+using std::experimental::bad_optional_access;
+using std::experimental::nullopt_t;
+}
