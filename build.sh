@@ -28,6 +28,7 @@ fetch_librime() {
     pushd . &&
     git clone --shallow-exclude='1.8.0' https://github.com/rime/librime.git &&
     cd librime &&
+    git tag -d latest &&
     patch -p1 < "$H/patches/librime/relocatable-plugins.patch" &&
     patch -p1 < "$H/patches/librime/0002-Revert-vendor-marisa-717.patch" &&
     cp "$H/patches/librime/cpp11.h" include/utf8/ &&

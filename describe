@@ -1,5 +1,5 @@
 #!/bin/sh
 PROJNAME=$(dirname "$1")
-VERSION=$(git --git-dir="$1" describe --tags --always --exclude 'latest')
+VERSION=$(git --git-dir="$1" describe --tags --always)
 URL=$(git --git-dir="$1" config --get remote.origin.url)
 echo "$PROJNAME" "$VERSION" "$URL"
