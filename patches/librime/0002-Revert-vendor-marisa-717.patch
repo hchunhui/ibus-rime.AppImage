@@ -27,32 +27,6 @@ index f154f37..ca546c4 100644
  [submodule "opencc"]
  	path = deps/opencc
  	url = https://github.com/BYVoid/OpenCC.git
-diff --git a/build-clang.bat b/build-clang.bat
-index c54df0b..9e6f6f2 100644
---- a/build-clang.bat
-+++ b/build-clang.bat
-@@ -118,7 +118,7 @@ if %build_deps% == 1 (
- 
-   echo building marisa.
-   pushd deps\marisa-trie
--  cmake . %deps_cmake_flags% || exit
-+  cmake .. %deps_cmake_flags% || exit
-   cmake --build build || exit
-   cmake --install build || exit
-   popd
-diff --git a/build.bat b/build.bat
-index 53e3c16..75a7895 100644
---- a/build.bat
-+++ b/build.bat
-@@ -245,7 +245,7 @@ if %build_deps% == 1 (
- 
-   echo building marisa.
-   pushd deps\marisa-trie
--  cmake . -B%build_dir% %deps_cmake_flags%
-+  cmake .. -B%build_dir% %deps_cmake_flags%
-   if errorlevel 1 goto error
-   cmake --build %build_dir% --config %build_config% --target install
-   if errorlevel 1 goto error
 diff --git a/deps.mk b/deps.mk
 index 2bcab57..d631bd5 100644
 --- a/deps.mk
