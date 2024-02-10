@@ -15,10 +15,10 @@ index 7a567be..44c60a9 100644
  }  // namespace rime
  
  static void rime_plugins_initialize() {
--  rime::PluginManager::instance().LoadPlugins(RIME_PLUGINS_DIR);
+-  rime::PluginManager::instance().LoadPlugins(rime::path(RIME_PLUGINS_DIR));
 +  auto appdir = getenv("APPDIR");
 +  if (appdir)
-+    rime::PluginManager::instance().LoadPlugins(std::string(appdir) + RIME_PLUGINS_DIR);
++    rime::PluginManager::instance().LoadPlugins(rime::path(std::string(appdir) + RIME_PLUGINS_DIR));
  }
  
  static void rime_plugins_finalize() {}
