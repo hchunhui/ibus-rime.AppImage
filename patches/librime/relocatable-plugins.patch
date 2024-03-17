@@ -11,14 +11,3 @@ index 7a567be..44c60a9 100644
              plugin_libs_[plugin_name] = plugin_lib;
            } catch (const std::exception& ex) {
              LOG(ERROR) << "error loading plugin " << plugin_name << ": "
-@@ -95,7 +95,9 @@ PluginManager& PluginManager::instance() {
- }  // namespace rime
- 
- static void rime_plugins_initialize() {
--  rime::PluginManager::instance().LoadPlugins(rime::path(RIME_PLUGINS_DIR));
-+  auto appdir = getenv("APPDIR");
-+  if (appdir)
-+    rime::PluginManager::instance().LoadPlugins(rime::path(std::string(appdir) + RIME_PLUGINS_DIR));
- }
- 
- static void rime_plugins_finalize() {}

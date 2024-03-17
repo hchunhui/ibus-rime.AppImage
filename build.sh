@@ -90,7 +90,6 @@ build_librime() {
         -DBUILD_WITH_ICU=OFF \
         -DBUILD_MERGED_PLUGINS=OFF \
         -DENABLE_EXTERNAL_PLUGINS=ON \
-        -DRIME_PLUGINS_DIR="/usr/lib/rime-plugins" \
         -DCMAKE_MODULE_PATH="$H/cmake" &&
     cmake --build build &&
     cd ..
@@ -142,9 +141,9 @@ bundle() {
     patch_exe librime/build/bin rime_patch &&
     patch_lib librime/build/lib librime.so.1 &&
     patch_lib librime/lib libglog.so.1 &&
-    patch_plugin librime/build/lib librime-lua.so &&
-    patch_plugin librime/build/lib librime-octagram.so &&
-    patch_plugin librime/build/lib librime-charcode.so &&
+    patch_plugin librime/build/lib/rime-plugins librime-lua.so &&
+    patch_plugin librime/build/lib/rime-plugins librime-octagram.so &&
+    patch_plugin librime/build/lib/rime-plugins librime-charcode.so &&
     patch_lib librime/lib libopencc.so.1.1 &&
     patch_exe librime/bin opencc &&
     patch_exe librime/bin opencc_dict &&
