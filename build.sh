@@ -35,7 +35,7 @@ fetch_librime() {
 
     cd deps &&
         git clone https://github.com/google/snappy.git -b 1.2.0 snappy &&
-        git clone https://github.com/google/glog.git -b v0.7.0  glog &&
+        git clone https://github.com/google/glog.git -b v0.6.0  glog &&
         git clone https://github.com/google/leveldb.git -b 1.23 leveldb &&
         git clone https://github.com/s-yata/marisa-trie.git -b v0.2.6 marisa-trie &&
         git clone https://github.com/BYVoid/OpenCC.git opencc &&
