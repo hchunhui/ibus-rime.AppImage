@@ -1,0 +1,115 @@
+From 84cfe3d08a075ac135aaf44de5a548a6ae33f0d3 Mon Sep 17 00:00:00 2001
+From: Chunhui He <hchunhui@mail.ustc.edu.cn>
+Date: Mon, 19 Aug 2024 12:03:35 +0000
+Subject: [PATCH] Revert "refactor: replace std::bind with lambda to increase
+ readability (#903)"
+
+This reverts commit 58ee93f7a8d20e9abd237b47f7f95873e6b660b9.
+---
+ src/rime/gear/key_binder.cc        | 18 ++++++------------
+ src/rime/lever/deployment_tasks.cc |  2 ++
+ src/rime/service.cc                |  9 ++++-----
+ src/rime_api_impl.h                |  5 ++---
+ 4 files changed, 14 insertions(+), 20 deletions(-)
+
+diff --git a/src/rime/gear/key_binder.cc b/src/rime/gear/key_binder.cc
+index f1e67c9..6d16f24 100644
+--- a/src/rime/gear/key_binder.cc
++++ b/src/rime/gear/key_binder.cc
+@@ -16,6 +16,8 @@
+ #include <rime/switches.h>
+ #include <rime/gear/key_binder.h>
+ 
++using namespace std::placeholders;
++
+ namespace rime {
+ 
+ enum KeyBindingCondition {
+@@ -200,21 +202,13 @@ void KeyBindings::LoadBindings(const an<ConfigList>& bindings) {
+         continue;
+       }
+     } else if (auto option = map->GetValue("toggle")) {
+-      binding.action = [option](auto engine) {
+-        toggle_option(engine, option->str());
+-      };
++      binding.action = std::bind(&toggle_option, _1, option->str());
+     } else if (auto option = map->GetValue("set_option")) {
+-      binding.action = [option](auto engine) {
+-        set_option(engine, option->str());
+-      };
++      binding.action = std::bind(&set_option, _1, option->str());
+     } else if (auto option = map->GetValue("unset_option")) {
+-      binding.action = [option](auto engine) {
+-        unset_option(engine, option->str());
+-      };
++      binding.action = std::bind(&unset_option, _1, option->str());
+     } else if (auto schema = map->GetValue("select")) {
+-      binding.action = [schema](auto engine) {
+-        select_schema(engine, schema->str());
+-      };
++      binding.action = std::bind(&select_schema, _1, schema->str());
+     } else {
+       LOG(WARNING) << "invalid key binding #" << i
+                    << ", accept: " << pattern->str()
+diff --git a/src/rime/lever/deployment_tasks.cc b/src/rime/lever/deployment_tasks.cc
+index 5dbb0dc..c043e2e 100644
+--- a/src/rime/lever/deployment_tasks.cc
++++ b/src/rime/lever/deployment_tasks.cc
+@@ -29,6 +29,8 @@
+ #include <windows.h>
+ #endif
+ 
++using namespace std::placeholders;
++
+ namespace fs = std::filesystem;
+ 
+ namespace rime {
+diff --git a/src/rime/service.cc b/src/rime/service.cc
+index e40493a..616c876 100644
+--- a/src/rime/service.cc
++++ b/src/rime/service.cc
+@@ -16,11 +16,10 @@ namespace rime {
+ 
+ Session::Session() {
+   engine_.reset(Engine::Create());
+-  engine_->sink().connect([this](auto text) { OnCommit(text); });
++  engine_->sink().connect(std::bind(&Session::OnCommit, this, _1));
+   SessionId session_id = reinterpret_cast<SessionId>(this);
+-  engine_->message_sink().connect([session_id](auto type, auto value) {
+-    Service::instance().Notify(session_id, type, value);
+-  });
++  engine_->message_sink().connect(
++      std::bind(&Service::Notify, &Service::instance(), session_id, _1, _2));
+ }
+ 
+ bool Session::ProcessKey(const KeyEvent& key_event) {
+@@ -66,7 +65,7 @@ Schema* Session::schema() const {
+ 
+ Service::Service() {
+   deployer_.message_sink().connect(
+-      [this](auto type, auto value) { Notify(0, type, value); });
++      std::bind(&Service::Notify, this, 0, _1, _2));
+ }
+ 
+ Service::~Service() {
+diff --git a/src/rime_api_impl.h b/src/rime_api_impl.h
+index 7749ce9..64aa605 100644
+--- a/src/rime_api_impl.h
++++ b/src/rime_api_impl.h
+@@ -38,11 +38,10 @@ RIME_DEPRECATED void RimeSetup(RimeTraits* traits) {
+ 
+ RIME_DEPRECATED void RimeSetNotificationHandler(RimeNotificationHandler handler,
+                                                 void* context_object) {
++  using namespace std::placeholders;
+   if (handler) {
+     Service::instance().SetNotificationHandler(
+-        [context_object, handler](auto id, auto type, auto value) {
+-          handler(context_object, id, type, value);
+-        });
++        std::bind(handler, context_object, _1, _2, _3));
+   } else {
+     Service::instance().ClearNotificationHandler();
+   }
+-- 
+2.39.2
+

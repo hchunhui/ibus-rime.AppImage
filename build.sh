@@ -31,6 +31,7 @@ fetch_librime() {
     git tag -d latest &&
     patch -p1 < "$H/patches/librime/relocatable-plugins.patch" &&
     patch -p1 < "$H/patches/librime/0002-Revert-vendor-marisa-717.patch" &&
+    patch -p1 < "$H/patches/librime/0001-Revert-refactor-replace-std-bind-with-lambda-to-incr.patch" &&
     cp "$H/patches/librime/cpp11.h" include/utf8/ &&
 
     cd deps &&
