@@ -14,19 +14,6 @@ This reverts commit 1ca3c3bd20a87713f8c69656f71b84150ff1a2f6.
  6 files changed, 55 insertions(+), 5 deletions(-)
  create mode 100644 deps/CMakeLists.txt
 
-diff --git a/.gitmodules b/.gitmodules
-index f154f37..ca546c4 100644
---- a/.gitmodules
-+++ b/.gitmodules
-@@ -12,7 +12,7 @@
- 	url = https://github.com/google/googletest.git
- [submodule "marisa-trie"]
- 	path = deps/marisa-trie
--	url = https://github.com/rime/marisa-trie.git
-+	url = https://github.com/s-yata/marisa-trie.git
- [submodule "opencc"]
- 	path = deps/opencc
- 	url = https://github.com/BYVoid/OpenCC.git
 diff --git a/deps.mk b/deps.mk
 index 2bcab57..d631bd5 100644
 --- a/deps.mk
