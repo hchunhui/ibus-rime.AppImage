@@ -145,7 +145,7 @@ bundle() {
     patch_plugin librime/build/lib/rime-plugins librime-lua.so &&
     patch_plugin librime/build/lib/rime-plugins librime-octagram.so &&
     patch_plugin librime/build/lib/rime-plugins librime-charcode.so &&
-    patch_lib librime/lib libopencc.so.1.1 &&
+    patch_lib librime/lib libopencc.so.1.2 &&
     patch_exe librime/bin opencc &&
     patch_exe librime/bin opencc_dict &&
     patch_exe librime/bin opencc_phrase_extract &&
