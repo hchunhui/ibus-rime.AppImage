@@ -6,6 +6,19 @@ INC_PATH="$H/librime/include"
 LIB_PATH="$H/librime/lib"
 BOOST_VERSION="1.58.0"
 
+fetch_cmake() {
+    wget "https://cmake.org/files/v3.16/cmake-3.16.9.tar.gz" &&
+    tar xvf cmake-3.16.9.tar.gz
+}
+
+build_cmake() {
+    cd cmake-3.16.9 &&
+    ./bootstrap -- -DCMAKE_USE_OPENSSL=OFF &&
+    make &&
+    make install &&
+    cd ..
+}
+
 fetch_boost_mini() {
     pushd . &&
     cd boost &&
@@ -220,6 +233,7 @@ fetch() {
     elif [ -n "${GITHUB_SERVER_URL}" ]; then
 	echo "GitHub Actions build log: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> ci-version
     fi &&
+    fetch_cmake &&
     fetch_patchelf &&
     fetch_boost_mini &&
     fetch_librime &&
@@ -228,6 +242,7 @@ fetch() {
 }
 
 build() {
+    build_cmake &&
     build_patchelf &&
     build_boost_mini &&
     build_thirdparty &&
