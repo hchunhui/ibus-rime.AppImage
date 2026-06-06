@@ -52,7 +52,7 @@ fetch_librime() {
         git clone https://github.com/google/glog.git -b v0.6.0  glog &&
         git clone https://github.com/google/leveldb.git -b 1.23 leveldb &&
         git clone https://github.com/s-yata/marisa-trie.git -b v0.2.6 marisa-trie &&
-        git clone https://github.com/BYVoid/OpenCC.git opencc &&
+        git clone https://github.com/BYVoid/OpenCC.git -b 'ver.1.2.0' opencc &&
         git clone https://github.com/jbeder/yaml-cpp.git -b 0.8.0 yaml-cpp &&
     cd opencc &&
     patch -p1 < "$H/patches/opencc/0001-relocatable-opencc.patch" &&
