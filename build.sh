@@ -4,7 +4,7 @@ J=1
 H="$PWD"
 INC_PATH="$H/librime/include"
 LIB_PATH="$H/librime/lib"
-BOOST_VERSION="1.58.0"
+BOOST_VERSION="1.65.0"
 
 fetch_cmake() {
     wget "https://cmake.org/files/v3.16/cmake-3.16.9.tar.gz" &&
@@ -67,7 +67,7 @@ fetch_librime() {
 
 fetch_ibus_rime() {
     pushd . &&
-    git clone --shallow-exclude='1.3.0' https://github.com/rime/ibus-rime.git &&
+    git clone --shallow-exclude='1.3.0' -b 1.6.1 https://github.com/rime/ibus-rime.git &&
     cd ibus-rime &&
     cp "$H/cmake/FindRime.cmake" cmake &&
     patch -p1 < "$H/patches/ibus-rime/0002-relocatable.patch" &&
