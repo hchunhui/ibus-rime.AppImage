@@ -68,7 +68,7 @@ leveldb:
 
 marisa:
 	cd $(SRC_DIR)/marisa-trie; \
-	cmake $(SRC_DIR) -Bbuild \
+	CXXFLAGS="-std=gnu++17" cmake . -Bbuild \
 	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
 	-DCMAKE_BUILD_TYPE:STRING="MinSizeRel" \
 	-DCMAKE_INSTALL_PREFIX:PATH="$(THIRD_PARTY_DIR)" \

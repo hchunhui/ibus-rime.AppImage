@@ -7,12 +7,12 @@ LIB_PATH="$H/librime/lib"
 BOOST_VERSION="1.65.0"
 
 fetch_cmake() {
-    wget "https://cmake.org/files/v3.16/cmake-3.16.9.tar.gz" &&
-    tar xvf cmake-3.16.9.tar.gz
+    wget "https://cmake.org/files/v3.22/cmake-3.22.6.tar.gz" &&
+    tar xvf cmake-3.22.6.tar.gz
 }
 
 build_cmake() {
-    cd cmake-3.16.9 &&
+    cd cmake-3.22.6 &&
     ./bootstrap -- -DCMAKE_USE_OPENSSL=OFF &&
     make &&
     make install &&
@@ -43,16 +43,13 @@ fetch_librime() {
     cd librime &&
     git tag -d latest &&
     patch -p1 < "$H/patches/librime/relocatable-plugins.patch" &&
-    patch -p1 < "$H/patches/librime/0002-Revert-vendor-marisa-717.patch" &&
-    patch -p1 < "$H/patches/librime/0001-Revert-refactor-replace-std-bind-with-lambda-to-incr.patch" &&
-    cp "$H/patches/librime/cpp11.h" include/utf8/ &&
 
     cd deps &&
         git clone https://github.com/google/snappy.git -b 1.2.2 snappy &&
         git clone https://github.com/google/glog.git -b v0.6.0  glog &&
         git clone https://github.com/google/leveldb.git -b 1.23 leveldb &&
-        git clone https://github.com/s-yata/marisa-trie.git -b v0.2.6 marisa-trie &&
-        git clone https://github.com/BYVoid/OpenCC.git -b 'ver.1.2.0' opencc &&
+        git clone https://github.com/s-yata/marisa-trie.git -b v0.3.1 marisa-trie &&
+        git clone https://github.com/BYVoid/OpenCC.git -b 'ver.1.4.2' opencc &&
         git clone https://github.com/jbeder/yaml-cpp.git -b 0.8.0 yaml-cpp &&
     cd opencc &&
     patch -p1 < "$H/patches/opencc/0001-relocatable-opencc.patch" &&
@@ -158,7 +155,7 @@ bundle() {
     patch_plugin librime/build/lib/rime-plugins librime-lua.so &&
     patch_plugin librime/build/lib/rime-plugins librime-octagram.so &&
     patch_plugin librime/build/lib/rime-plugins librime-charcode.so &&
-    patch_lib librime/lib libopencc.so.1.2 &&
+    patch_lib librime/lib libopencc.so.1.4 &&
     patch_exe librime/bin opencc &&
     patch_exe librime/bin opencc_dict &&
     patch_exe librime/bin opencc_phrase_extract &&
